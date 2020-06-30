@@ -1,0 +1,163 @@
+DEBUG:aiogram:Make request: "getMe" with data: "{}" and files "None"
+DEBUG:aiogram:Response for getMe: [200] "'{"ok":true,"result":{"id":1204328608,"is_bot":true,"first_name":"IKnowAboutYou","username":"IKnowAboutYou_BOT","can_join_groups":true,"can_read_all_group_messages":false,"supports_inline_queries":true}}'"
+INFO:aiogram:Bot: IKnowAboutYou [@IKnowAboutYou_BOT]
+DEBUG:aiogram:Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG:aiogram:Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":451}}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': -1, 'timeout': 1}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+WARNING:aiogram:Updates were skipped successfully.
+INFO:aiogram.dispatcher.dispatcher:Start polling.
+DEBUG:aiogram:Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG:aiogram:Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0}}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[{"update_id":971091334,\n"message":{"message_id":2042,"from":{"id":42068914,"is_bot":false,"first_name":"\\u0410\\u043d\\u0434\\u0440\\u0435\\u0439","last_name":"\\u0411\\u0443\\u0445\\u0430\\u043d\\u0435\\u043d\\u043a\\u043e","username":"andriibuk","language_code":"ru"},"chat":{"id":42068914,"first_name":"\\u0410\\u043d\\u0434\\u0440\\u0435\\u0439","last_name":"\\u0411\\u0443\\u0445\\u0430\\u043d\\u0435\\u043d\\u043a\\u043e","username":"andriibuk","type":"private"},"date":1593514726,"text":"/start","entities":[{"offset":0,"length":6,"type":"bot_command"}]}}]}'"
+DEBUG:aiogram.dispatcher.dispatcher:Received 1 updates.
+ERROR:asyncio:Task exception was never retrieved
+future: <Task finished name='Task-10' coro=<Dispatcher._process_polling_updates() done, defined at /home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:331> exception=ServerSelectionTimeoutError('localhost:27017: [Errno 111] Connection refused')>
+Traceback (most recent call last):
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 339, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 194, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 214, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/anton/PycharmProjects/telegram_shop/main.py", line 37, in wrapper
+    BotService.check_user_by_telegram_id(telegram_id, username)
+  File "/home/anton/PycharmProjects/telegram_shop/service/bot_service.py", line 239, in check_user_by_telegram_id
+    user = User.objects(telegram_id=telegram_id).first()
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/mongoengine/queryset/manager.py", line 37, in __get__
+    queryset = queryset_class(owner, owner._get_collection())
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/mongoengine/document.py", line 215, in _get_collection
+    if cls._meta.get("auto_create_index", True) and db.client.is_primary:
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/mongo_client.py", line 1005, in is_primary
+    return self._server_property('is_writable')
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/mongo_client.py", line 829, in _server_property
+    server = self._topology.select_server(
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/topology.py", line 233, in select_server
+    return random.choice(self.select_servers(selector,
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/topology.py", line 192, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/topology.py", line 208, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 111] Connection refused
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091335, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091335, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091335, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091335, 'timeout': 20}" and files "None"
+INFO:aiogram.dispatcher.dispatcher:Stop polling...
+WARNING:aiogram:Goodbye!
+DEBUG:aiogram:Make request: "getMe" with data: "{}" and files "None"
+DEBUG:aiogram:Response for getMe: [200] "'{"ok":true,"result":{"id":1204328608,"is_bot":true,"first_name":"IKnowAboutYou","username":"IKnowAboutYou_BOT","can_join_groups":true,"can_read_all_group_messages":false,"supports_inline_queries":true}}'"
+INFO:aiogram:Bot: IKnowAboutYou [@IKnowAboutYou_BOT]
+DEBUG:aiogram:Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG:aiogram:Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0}}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': -1, 'timeout': 1}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+WARNING:aiogram:Updates were skipped successfully.
+INFO:aiogram.dispatcher.dispatcher:Start polling.
+DEBUG:aiogram:Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG:aiogram:Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0}}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[{"update_id":971091335,\n"message":{"message_id":2043,"from":{"id":42068914,"is_bot":false,"first_name":"\\u0410\\u043d\\u0434\\u0440\\u0435\\u0439","last_name":"\\u0411\\u0443\\u0445\\u0430\\u043d\\u0435\\u043d\\u043a\\u043e","username":"andriibuk","language_code":"ru"},"chat":{"id":42068914,"first_name":"\\u0410\\u043d\\u0434\\u0440\\u0435\\u0439","last_name":"\\u0411\\u0443\\u0445\\u0430\\u043d\\u0435\\u043d\\u043a\\u043e","username":"andriibuk","type":"private"},"date":1593514838,"text":"/start","entities":[{"offset":0,"length":6,"type":"bot_command"}]}}]}'"
+DEBUG:aiogram.dispatcher.dispatcher:Received 1 updates.
+ERROR:asyncio:Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Dispatcher._process_polling_updates() done, defined at /home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:331> exception=ServerSelectionTimeoutError('localhost:27017: [Errno 111] Connection refused')>
+Traceback (most recent call last):
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 339, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 194, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 214, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/anton/PycharmProjects/telegram_shop/main.py", line 37, in wrapper
+    BotService.check_user_by_telegram_id(telegram_id, username)
+  File "/home/anton/PycharmProjects/telegram_shop/service/bot_service.py", line 239, in check_user_by_telegram_id
+    user = User.objects(telegram_id=telegram_id).first()
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/mongoengine/queryset/manager.py", line 37, in __get__
+    queryset = queryset_class(owner, owner._get_collection())
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/mongoengine/document.py", line 215, in _get_collection
+    if cls._meta.get("auto_create_index", True) and db.client.is_primary:
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/mongo_client.py", line 1005, in is_primary
+    return self._server_property('is_writable')
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/mongo_client.py", line 829, in _server_property
+    server = self._topology.select_server(
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/topology.py", line 233, in select_server
+    return random.choice(self.select_servers(selector,
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/topology.py", line 192, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/topology.py", line 208, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 111] Connection refused
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091336, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[{"update_id":971091336,\n"message":{"message_id":2044,"from":{"id":42068914,"is_bot":false,"first_name":"\\u0410\\u043d\\u0434\\u0440\\u0435\\u0439","last_name":"\\u0411\\u0443\\u0445\\u0430\\u043d\\u0435\\u043d\\u043a\\u043e","username":"andriibuk","language_code":"ru"},"chat":{"id":42068914,"first_name":"\\u0410\\u043d\\u0434\\u0440\\u0435\\u0439","last_name":"\\u0411\\u0443\\u0445\\u0430\\u043d\\u0435\\u043d\\u043a\\u043e","username":"andriibuk","type":"private"},"date":1593514851,"text":"/start","entities":[{"offset":0,"length":6,"type":"bot_command"}]}}]}'"
+DEBUG:aiogram.dispatcher.dispatcher:Received 1 updates.
+ERROR:asyncio:Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<Dispatcher._process_polling_updates() done, defined at /home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:331> exception=ServerSelectionTimeoutError('localhost:27017: [Errno 111] Connection refused')>
+Traceback (most recent call last):
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 339, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 194, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 214, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/anton/PycharmProjects/telegram_shop/main.py", line 37, in wrapper
+    BotService.check_user_by_telegram_id(telegram_id, username)
+  File "/home/anton/PycharmProjects/telegram_shop/service/bot_service.py", line 239, in check_user_by_telegram_id
+    user = User.objects(telegram_id=telegram_id).first()
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/mongoengine/queryset/base.py", line 287, in first
+    result = queryset[0]
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/mongoengine/queryset/base.py", line 191, in __getitem__
+    queryset._cursor[key],
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/cursor.py", line 614, in __getitem__
+    for doc in clone:
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/cursor.py", line 1156, in next
+    if len(self.__data) or self._refresh():
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/cursor.py", line 1050, in _refresh
+    self.__session = self.__collection.database.client._ensure_session()
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/mongo_client.py", line 1810, in _ensure_session
+    return self.__start_session(True, causal_consistency=False)
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/mongo_client.py", line 1763, in __start_session
+    server_session = self._get_server_session()
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/mongo_client.py", line 1796, in _get_server_session
+    return self._topology.get_server_session()
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/topology.py", line 482, in get_server_session
+    self._select_servers_loop(
+  File "/home/anton/PycharmProjects/telegram_shop/venv/lib/python3.8/site-packages/pymongo/topology.py", line 208, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 111] Connection refused
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+DEBUG:aiogram:Response for getUpdates: [200] "'{"ok":true,"result":[]}'"
+DEBUG:aiogram:Make request: "getUpdates" with data: "{'offset': 971091337, 'timeout': 20}" and files "None"
+INFO:aiogram.dispatcher.dispatcher:Stop polling...
+WARNING:aiogram:Goodbye!
