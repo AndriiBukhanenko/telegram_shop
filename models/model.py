@@ -1,8 +1,10 @@
-from datetime import datetime
-
-from mongoengine import *
-
-connect('shop_db')
+# from datetime import datetime
+#
+# from mongoengine import *
+#
+# from models.utils import db_connect
+#
+# connect('shop_db')
 
 
 class Attributes(EmbeddedDocument):

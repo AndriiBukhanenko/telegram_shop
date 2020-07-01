@@ -133,6 +133,7 @@ async def personal(message):
 
 
 if __name__ == '__main__':
+
     os.makedirs('logs', exist_ok=True)
     logging.basicConfig(filename='logs/log_' + datetime.date.today().strftime("%Y_%m_%d") + '_bot.log',
                         datefmt="%Y_%m_%d %H:%M:%S",
