@@ -1,44 +1,26 @@
-from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker
+# from datetime import datetime
+#
+# from mongoengine import *
+#
+# from models.utils import db_connect
+#
+# connect('shop_db')
 
 
-Base = declarative_base()
-session = sessionmaker()()
-
-cursor = create_engine('mysql+pymysql://a0451596:tukeuxtime@141.8.192.58/a0451596_telegram_shop')
-# for row in cursor.execute('select * from User'):
-#      print(dict(row))
+class Attributes(EmbeddedDocument):
+    height = FloatField()
+    weight = FloatField()
+    width = FloatField()
 
 
-class CRUD():
-    def save(self):
-        if self.id == None:
-            session.add(self)
-        return session.commit()
-
-    def destroy(self):
-        session.delete(self)
-        return session.commit()
-
-
-class Attributes(Base):
-    __tablename__ = 'Attributes'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    height = Column(String(32))
-    weight = Column(String(32))
-    width = Column(String(32))
-
-
-class User(Base, CRUD):
-    __tablename__ = 'User'
-    telegram_id = Column(String(32), nullable=False, primary_key=True)
-    username = Column(String(128))
-    total = Column(Integer)
-    creation_date = Column(DateTime)
+class User(Document):
+    telegram_id = StringField(max_length=32, required=True, unique=True)
+    username = StringField(max_length=128)
+    total = IntField(min_value=0)
+    creation_date = DateTimeField()
 
     def calc_total(self):
-        query_carts = session.query(Cart).filter_by(user=self, is_archived=True)
+        query_carts = Cart.objects(user=self, is_archived=True)
         carts = [cart for cart in query_carts]
         total = 0
         for cart in carts:
@@ -54,19 +36,17 @@ class User(Base, CRUD):
         return str(round((self.get_total() / 100), 2)) + ' UAH'
 
 
-class Cart(Base, CRUD):
-    __tablename__ = 'Cart'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    user = Column(String(32), ForeignKey('User.telegram_id'))
-    is_archived = Column(Boolean)
-    total = Column(Integer, default=0)
-    archive_date = Column(DateTime)
+class Cart(Document):
+    user = ReferenceField(User)
+    is_archived = BooleanField(default=False)
+    total = IntField(min_value=0, default=0)
+    archive_date = DateTimeField(required=False)
 
     def get_size(self):
         return self.get_cart_products().count()
 
     def get_cart_products(self):
-        return session.query(CartProduct).filter_by(cart=self)
+        return CartProduct.objects.filter(cart=self)
 
     def get_cart_products_freq_dict(self):
         cart_products = self.get_cart_products()
@@ -108,22 +88,17 @@ class Cart(Base, CRUD):
         return str(round(self.total / 100, 2)) + ' UAH'
 
 
-class CartProduct(Base):
-    __tablename__ = 'CartProduct'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    cart = Column(Integer, ForeignKey('Cart.id'))
-    product = Column(Integer, ForeignKey('Product.id'))
+class CartProduct(Document):
+    cart = ReferenceField(Cart)
+    product = ReferenceField('Product')
 
 
-class Category(Base, CRUD):
-    __tablename__ = 'Category'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(String(255), nullable=False)
-    description = Column(String(4096))
-    subcategories_id = ARRAY(ForeignKey('Category.id'))
-    subcategories = relationship(lambda: Category, remote_side=id, backref='sub_categories')
-    parent = Column(ForeignKey('Category.id'))
-    is_root = Column(Boolean)
+class Category(Document):
+    title = StringField(min_length=1, max_length=255, required=True)
+    description = StringField(max_length=4096)
+    subcategories = ListField(ReferenceField('self'))
+    parent = ReferenceField('self')
+    is_root = BooleanField(default=False)
 
     @classmethod
     def create(cls, **kwargs):
@@ -141,26 +116,24 @@ class Category(Base, CRUD):
     def is_parent(self):
         return bool(self.parent)
 
-    # def get_products(self):
-    #     return Product.objects.filter(category=self)
+    def get_products(self):
+        return Product.objects.filter(category=self)
 
     def __str__(self):
         return self.title
 
 
-class Product(Base):
-    __tablename__ = 'Product'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(String(255), nullable=False)
-    img_url = Column(String(1024))
-    category = Column(ForeignKey('Category.id'), nullable=False)
-    article = Column(String(64), nullable=False)
-    description = Column(String(4096))
-    price = Column(Integer, nullable=False)
-    in_stock = Column(Integer, default=0)
-    discount_price = Column(Integer)
-    attributes = Column(Integer, ForeignKey('Attributes.id'))
-    extra_data = Column(String(255))
+class Product(Document):
+    title = StringField(min_length=1, max_length=255, required=True)
+    img_url = StringField(max_length=1024)
+    category = ReferenceField(Category, required=True)
+    article = StringField(max_length=64, required=True)
+    description = StringField(max_length=4096)
+    price = IntField(min_value=1, required=True)
+    in_stock = IntField(min_value=0, default=0)
+    discount_price = IntField(min_value=1)
+    attributes = EmbeddedDocumentField(Attributes)
+    extra_data = StringField()
 
     def get_price(self):
         return self.price if not self.discount_price else self.discount_price
@@ -182,7 +155,4 @@ class Product(Base):
 
 
 if __name__ == '__main__':
-    # Base.metadata.create_all(cursor)
-    # cats = session.query(Category).filter_by(is_root=True)
-    for row in cursor.execute('select * from Category where is_root = True'):
-        print(dict(row))
+    pass

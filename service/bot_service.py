@@ -4,7 +4,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeybo
     InputTextMessageContent, InlineQueryResultArticle
 
 from keyboards import START_KB
-from models.model import Category, Product, Cart, CartProduct, User
+from models.model import Category, Product, Cart, CartProduct, User, cursor
 
 
 class BotService:
@@ -22,9 +22,12 @@ class BotService:
         self._bot = bot_instanse
 
     async def view_root_categories(self, message):
-        cats = Category.objects(is_root=True)
+        # cats = Category.objects(is_root=True)  session.query(Category).filter_by(user=self, is_archived=True)
+        cats = []
+        for row in cursor.execute('select * from Category where is_root = True'):
+            cats.append(dict(row))
         kb = InlineKeyboardMarkup()
-        buttons = [InlineKeyboardButton(text=cat.title, callback_data=str(cat.id)) for cat in cats]
+        buttons = [InlineKeyboardButton(text=cat['title'], callback_data=str(cat['id'])) for cat in cats]
         buttons.append(InlineKeyboardButton(text="Поиск товаров по названию", switch_inline_query_current_chat=''))
         kb.add(*buttons)
         if message.from_user.is_bot:

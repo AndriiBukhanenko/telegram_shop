@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource
-from mongoengine import DoesNotExist
+from sqlalchemy.orm.exc import NoResultFound
 
 from api.schema import CategorySchema, ProductSchema, UserSchema
 from models.model import Category, Product, User
@@ -18,7 +18,7 @@ class CategoryResource(Resource):
         many = not cat_id
         try:
             query = Category.objects.get(id=cat_id) if cat_id else Category.objects()
-        except DoesNotExist:
+        except NoResultFound:
             return {'msg': f'Category with id {cat_id} not exists'}
         return CategorySchema().dump(query, many=many)
 
@@ -67,7 +67,7 @@ class ProductResource(Resource):
         many = not product_id
         try:
             query = Product.objects.get(id=product_id) if product_id else Product.objects()
-        except DoesNotExist:
+        except NoResultFound:
             return {'msg': f'Product with id {product_id} not exists'}
         return ProductSchema().dump(query, many=many)
 
@@ -128,7 +128,7 @@ class UserResource(Resource):
         many = not user_id
         try:
             query = User.objects.get(id=user_id) if user_id else User.objects()
-        except DoesNotExist:
+        except NoResultFound:
             return {'msg': f'User with id {user_id} not exists'}
 
         if user_id:
