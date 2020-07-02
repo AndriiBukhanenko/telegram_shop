@@ -4,9 +4,12 @@ from sqlalchemy.orm import relationship, sessionmaker
 
 
 Base = declarative_base()
-session = sessionmaker()()
+Session = sessionmaker()
 
 cursor = create_engine('mysql+pymysql://a0451596:tukeuxtime@141.8.192.58/a0451596_telegram_shop')
+Session.configure(bind=cursor)
+
+session = Session()
 # for row in cursor.execute('select * from User'):
 #      print(dict(row))
 
@@ -183,6 +186,9 @@ class Product(Base):
 
 if __name__ == '__main__':
     # Base.metadata.create_all(cursor)
-    # cats = session.query(Category).filter_by(is_root=True)
-    for row in cursor.execute('select * from Category where is_root = True'):
-        print(dict(row))
+    sql = session.query(Category).filter_by(is_root=True)
+    data = sql.all()
+    for row in data:
+        print(row.id)
+    # for row in cursor.execute('select * from Category where is_root = True'):
+    #     print(dict(row))
