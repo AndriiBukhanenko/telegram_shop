@@ -78,29 +78,36 @@ class Cart(Base, CRUD):
         return {products_dict[prod_id]: count for prod_id, count in frequencies.items()}
 
     def add_product_to_cart(self, product):
-        CartProduct.objects.create(cart=self, product=product)
+        # CartProduct.objects.create(cart=self, product=product)
+        session.add(CartProduct(cart=self.id, product=product.id))
         self.total += product.get_price()
         self.save()
 
     def delete_product_from_cart(self, product):
-        cart_prods = CartProduct.objects.filter(cart=self, product=product)
+        # cart_prods = CartProduct.objects.filter(cart=self, product=product)
+        cart_prods = session.query(CartProduct).filter_by(cart=self.id, product=product.id)
         if len(cart_prods) != 0:
-            CartProduct.objects.filter(cart=self, product=product).first().delete()
+            # CartProduct.objects.filter(cart=self, product=product).first().delete()
+            session.query(CartProduct).filter_by(cart=self.id, product=product.id).first().delete()
             self.total -= product.get_price()
             self.save()
 
     def remove_product_from_cart(self, product):
-        cart_prods = CartProduct.objects.filter(cart=self, product=product)
+        # cart_prods = CartProduct.objects.filter(cart=self, product=product)
+        cart_prods = session.query(CartProduct).filter_by(cart=self.id, product=product.id)
         if len(cart_prods) != 0:
             self.total -= product.get_price() * self.get_product_qty(product)
             self.save()
-            CartProduct.objects.filter(cart=self, product=product).delete()
+            # CartProduct.objects.filter(cart=self, product=product).delete()
+            session.query(CartProduct).filter_by(cart=self.id, product=product.id).delete()
 
     def get_product_qty(self, product):
-        return len(CartProduct.objects(cart=self, product=product))
+        # return len(CartProduct.objects(cart=self, product=product))
+        return len(session.query(CartProduct).filter_by(cart=self.id, product=product.id))
 
     def remove_all_from_cart(self):
-        CartProduct.objects(cart=self).delete()
+        # CartProduct.objects(cart=self).delete()
+        session.query(CartProduct).filter_by(cart=self.id).delete()
         self.total = 0
         self.save()
 
@@ -186,9 +193,9 @@ class Product(Base):
 
 if __name__ == '__main__':
     # Base.metadata.create_all(cursor)
-    sql = session.query(Category).filter_by(is_root=True)
+    sql = session.query(User)
     data = sql.all()
     for row in data:
         print(row.id)
-    # for row in cursor.execute('select * from Category where is_root = True'):
-    #     print(dict(row))
+    for row in cursor.execute('select * from User'):
+        print(len(row))

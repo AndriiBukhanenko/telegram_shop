@@ -236,14 +236,20 @@ class BotService:
         if not telegram_id:
             return None
 
-        user = User.objects(telegram_id=telegram_id).first()
+        # user = User.objects(telegram_id=telegram_id).first()
+        user = session.query(User).filter_by(telegram_id=telegram_id).first()
         if not user:
-            user = User.objects.create(
-                telegram_id=telegram_id,
-                username=username if username else 'No user name',
-                total=0,
-                creation_date=datetime.now()
-            )
+            # user = User.objects.create(
+            #     telegram_id=telegram_id,
+            #     username=username if username else 'No user name',
+            #     total=0,
+            #     creation_date=datetime.now()
+            # )
+            user = session.add(User(telegram_id=telegram_id,
+                                    username=username if username else 'No user name',
+                                    total=0,
+                                    creation_date=datetime.now()))
+            session.commit()
         return user
 
     @staticmethod
@@ -417,8 +423,8 @@ class BotService:
                 input_message_content=InputTextMessageContent(
                     disable_web_page_preview=False,
                     message_text=await self.get_bill_text(cart.get_cart_products_freq_dict(),
-                                                    cart.get_total_str(),
-                                                    cart.archive_date)
+                                                          cart.get_total_str(),
+                                                          cart.archive_date)
                 ),
             )
             results.append(temp_res)
