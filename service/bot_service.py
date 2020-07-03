@@ -133,7 +133,7 @@ class BotService:
 
         product_id = str(call.data.split('_')[2])
         # product = Product.objects(id=product_id).get()
-        product = session.query(Product).filter_by(id=product_id)
+        product = session.query(Product).filter_by(id=product_id).first()
 
         if action == 'remove':
             cart.remove_product_from_cart(product)
@@ -179,11 +179,17 @@ class BotService:
         products_dict = {cart_product.product: cart_product for cart_product in user_cart.get_cart_products()}
         # products_dict = {print(cart_product.product) for cart_product in user_cart.get_cart_products()}
         for key, cart_product in products_dict.items():
-            qty = frequencies[key]
-            cart_prod_text = f'{cart_product.product.title}\n' \
-                             f'Qty: {cart_product.product.in_stock}\n' \
-                             f'Price: {cart_product.product.get_price_str()}\n' \
-                             f'Total: {cart_product.product.get_total_str(qty)}\n'
+            # qty = frequencies[key]
+            qty =1 # fiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiix
+            product = session.query(Product).filter_by(id=key).first()
+            # cart_prod_text = f'{cart_product.product.title}\n' \
+            #                  f'Qty: {cart_product.product.in_stock}\n' \
+            #                  f'Price: {cart_product.product.get_price_str()}\n' \
+            #                  f'Total: {cart_product.product.get_total_str(qty)}\n'
+            cart_prod_text = f'{product.title}\n' \
+                             f'Qty: {product.in_stock}\n' \
+                             f'Price: {product.get_price_str()}\n' \
+                             f'Total: {product.get_total_str(qty)}\n'
 
             kb = InlineKeyboardMarkup()
             buttons = [
