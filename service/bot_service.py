@@ -23,9 +23,6 @@ class BotService:
 
     async def view_root_categories(self, message):
         cats = session.query(Category).filter_by(is_root=True)
-        # cats = []
-        # for row in cursor.execute('select * from Category where is_root = True'):
-        #     cats.append(dict(row))
         kb = InlineKeyboardMarkup()
         buttons = [InlineKeyboardButton(text=cat.title, callback_data=str(cat.id)) for cat in cats]
         buttons.append(InlineKeyboardButton(text="Поиск товаров по названию", switch_inline_query_current_chat=''))
@@ -41,13 +38,14 @@ class BotService:
     async def show_categories(self, data, message):
         kb = InlineKeyboardMarkup()
         title_text = ' | Категории:'
-        category = Category.objects.get(id=data)
+        # category = Category.objects.get(id=data)
+        category = session.query(Category).filter_by(id=data).first()
         buttons = []
 
-        if category.subcategories:
+        if category.sub_categories:
             buttons = []
-            for cat in category.subcategories:
-                if cat.subcategories:
+            for cat in category.sub_categories:
+                if cat.sub_categories:
                     buttons.append(InlineKeyboardButton(text=cat.title, callback_data=str(cat.id)))
                     continue
                 buttons.append(
@@ -59,7 +57,7 @@ class BotService:
         buttons.append(InlineKeyboardButton(text='^ В начало', callback_data=START_KB['categories']))
         kb.add(*buttons)
 
-        if not category.subcategories:
+        if not category.sub_categories:
             title_text = ' | Товары:'
             await self.show_products_inline(category.get_products(), message.chat.id)
             await self._bot.delete_message(message.chat.id, message.message_id)
@@ -134,7 +132,8 @@ class BotService:
             return await self._bot.answer_callback_query(call.id, text=f"✔ All products removed from cart")
 
         product_id = str(call.data.split('_')[2])
-        product = Product.objects(id=product_id).get()
+        # product = Product.objects(id=product_id).get()
+        product = session.query(Product).filter_by(id=product_id)
 
         if action == 'remove':
             cart.remove_product_from_cart(product)
@@ -172,11 +171,13 @@ class BotService:
         user = await BotService.get_user_by_telegram_id(message.from_user.id)
         user_cart = self.get_cart_by_user(user)
         if not user_cart or user_cart.get_size() == 0:
+        # if not user_cart:
             return await self._bot.send_message(user_id, 'No articles yet in cart')
 
-        frequencies = user_cart.get_cart_products().item_frequencies('product')
-
-        products_dict = {cart_product.product.id: cart_product for cart_product in user_cart.get_cart_products()}
+        frequencies = user_cart.get_cart_products().all() #.item_frequencies('product')
+        frequencies = {fre.product: fre for fre in frequencies}
+        products_dict = {cart_product.product: cart_product for cart_product in user_cart.get_cart_products()}
+        # products_dict = {print(cart_product.product) for cart_product in user_cart.get_cart_products()}
         for key, cart_product in products_dict.items():
             qty = frequencies[key]
             cart_prod_text = f'{cart_product.product.title}\n' \
@@ -204,14 +205,16 @@ class BotService:
         await self._bot.send_message(user_id, 'Order:', reply_markup=kb)
 
     async def check_cart_limit_reached(self, user_cart, product):
-        count = CartProduct.objects(cart=user_cart, product=str(product.id)).count()
+        # count = CartProduct.objects(cart=user_cart, product=str(product.id)).count()
+        count = session.query(CartProduct).filter_by(cart=user_cart.id, product=str(product.id)).count()
         if count == product.in_stock:
             return True
         return False
 
     async def add_to_cart(self, call):
         user_id = str(call.from_user.id)
-        product = Product.objects.get(id=call.data.split('_')[1])
+        # product = Product.objects.get(id=call.data.split('_')[1])
+        product = session.query(Product).filter_by(id=call.data.split('_')[1]).first()
         # if stock = 0 we cannot add this prod to cart
         if product.in_stock == 0:
             return await self._bot.answer_callback_query(call.id, text=f"❌ Product is out of stock")
@@ -259,16 +262,25 @@ class BotService:
         if not telegram_id:
             return None
 
-        return User.objects(telegram_id=telegram_id).first()
+        # return User.objects(telegram_id=telegram_id).first()
+        return session.query(User).filter_by(telegram_id=telegram_id).first()
 
     @staticmethod
     def get_cart_by_user(user, archived_id=None):
         if archived_id:
-            query_res = Cart.objects(user=user, id=archived_id, is_archived=True)
+            # query_res = Cart.objects(user=user, id=archived_id, is_archived=True)
+            query_res = session.query(Cart).filter_by(user=user.telegram_id, id=archived_id, is_archived=True)
             return query_res.first() if query_res else None
 
-        query_res = Cart.objects(user=user, is_archived=False)
-        return query_res.first() if query_res else Cart.objects.create(user=user)
+        # query_res = Cart.objects(user=user, is_archived=False)
+        query_res = session.query(Cart).filter_by(user=user.telegram_id, is_archived=False).first()
+        # return query_res.first() if query_res else Cart.objects.create(user=user)
+        if query_res:
+                return query_res
+        else:
+                session.add(Cart(user=user.telegram_id))
+                session.commit()
+                return session.query(Cart).filter_by(user=user.telegram_id, is_archived=False).first()
 
     async def show_total(self, call):
         user = await BotService.get_user_by_telegram_id(call.from_user.id)
@@ -293,7 +305,9 @@ class BotService:
 
     async def show_promo_products(self, message):
         await self._bot.delete_message(message.chat.id, message.message_id)
-        promo_products_query = Product.objects.filter(discount_price__exists=True)
+        # promo_products_query = Product.objects.filter(discount_price__exists=True)
+        promo_products_query = session.query(Product).filter(Product.discount_price.isnot(None))
+
         if promo_products_query.count() == 0:
             return await self._bot.send_message(message.chat.id, 'No discount products found')
         promo_products = []
@@ -301,7 +315,16 @@ class BotService:
         await self.show_products(promo_products, message.chat.id)
 
     async def show_articles_by_category_title(self, category_title, query_id):
-        products = [product for product in Product.objects(category=Category.objects(title=category_title).get())]
+        # products = [product for product in Product.objects(category=Category.objects(title=category_title).get())]
+        # session.add(Category(title=category_title))
+        # session.commit()
+        # category = session.query(Category).filter_by(title=category_title).all()
+        # session.add(Product(category=category))
+        # session.commit()
+        # products = [product for product in session.query(Product).filter_by(category=session.query(Product).filter_by(category=category).first())]
+        category = session.query(Category).filter_by(title=category_title).first()
+        products = session.query(Product).filter_by(category=category.id).all()
+        # products = [product for product in products]
         await self.show_products_inline(products, query_id)
 
     async def process_inline(self, query):
@@ -309,7 +332,8 @@ class BotService:
         if not data:
             return
 
-        query_set = Product.objects(title__contains=data)
+        # query_set = Product.objects(title__contains=data)
+        query_set = session.query(Product).filter_by(title__contains=data)
         if query_set.count() == 0:
             return
         products = [product for product in query_set]
@@ -363,7 +387,9 @@ class BotService:
         user_id = str(message.chat.id)
         # get carts with is_archived = True
         user = await BotService.get_user_by_telegram_id(message.from_user.id)
-        query = Cart.objects(user=user, is_archived=True)
+        # query = Cart.objects(user=user, is_archived=True)
+        query = session.query(Cart).filter_by(user=user.telegram_id, is_archived=True)
+
         if not query:
             return await self._bot.send_message(user_id, "No archived carts found")
 
@@ -409,7 +435,8 @@ class BotService:
         user_id = str(query.from_user.id)
         # get carts with is_archived = True
         user = await BotService.get_user_by_telegram_id(query.from_user.id)
-        cart_query = Cart.objects(user=user, is_archived=True)
+        # cart_query = Cart.objects(user=user, is_archived=True)
+        cart_query = session.query(Cart).filter_by(user=user.telegram_id, is_archived=True)
         if not cart_query:
             return await self._bot.send_message(user_id, "No archived carts found")
 

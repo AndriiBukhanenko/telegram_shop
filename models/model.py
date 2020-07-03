@@ -16,7 +16,7 @@ session = Session()
 
 class CRUD():
     def save(self):
-        if self.id == None:
+        if (hasattr(self, 'telegram_id') and self.telegram_id is None) or (hasattr(self, 'id') and self.id is None):
             session.add(self)
         return session.commit()
 
@@ -41,7 +41,7 @@ class User(Base, CRUD):
     creation_date = Column(DateTime)
 
     def calc_total(self):
-        query_carts = session.query(Cart).filter_by(user=self, is_archived=True)
+        query_carts = session.query(Cart).filter_by(user=self.telegram_id, is_archived=True)
         carts = [cart for cart in query_carts]
         total = 0
         for cart in carts:
@@ -61,15 +61,16 @@ class Cart(Base, CRUD):
     __tablename__ = 'Cart'
     id = Column(Integer, primary_key=True, autoincrement=True)
     user = Column(String(32), ForeignKey('User.telegram_id'))
-    is_archived = Column(Boolean)
+    is_archived = Column(Boolean, default=False)
     total = Column(Integer, default=0)
     archive_date = Column(DateTime)
+
 
     def get_size(self):
         return self.get_cart_products().count()
 
     def get_cart_products(self):
-        return session.query(CartProduct).filter_by(cart=self)
+        return session.query(CartProduct).filter_by(cart=self.id)
 
     def get_cart_products_freq_dict(self):
         cart_products = self.get_cart_products()
@@ -192,10 +193,11 @@ class Product(Base):
 
 
 if __name__ == '__main__':
-    # Base.metadata.create_all(cursor)
-    sql = session.query(User)
-    data = sql.all()
-    for row in data:
-        print(row.id)
-    for row in cursor.execute('select * from User'):
-        print(len(row))
+    Base.metadata.create_all(cursor)
+    # sql = session.query(User)
+    # data = sql.all()
+
+    # for row in data:
+    #     print(row.id)
+    # for row in cursor.execute('select * from User'):
+    #     print(len(row))
