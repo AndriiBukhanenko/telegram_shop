@@ -174,7 +174,7 @@ class BotService:
         # if not user_cart:
             return await self._bot.send_message(user_id, 'No articles yet in cart')
 
-        frequencies = user_cart.get_cart_products().all() #.item_frequencies('product')
+        frequencies = user_cart.get_cart_products() #.item_frequencies('product')
         frequencies = {fre.product: fre for fre in frequencies}
         products_dict = {cart_product.product: cart_product for cart_product in user_cart.get_cart_products()}
         # products_dict = {print(cart_product.product) for cart_product in user_cart.get_cart_products()}
@@ -339,7 +339,8 @@ class BotService:
             return
 
         # query_set = Product.objects(title__contains=data)
-        query_set = session.query(Product).filter_by(title__contains=data)
+        data = Product.title.ilike('%' + str(data) + '%')
+        query_set = session.query(Product).filter(data)
         if query_set.count() == 0:
             return
         products = [product for product in query_set]
@@ -348,23 +349,25 @@ class BotService:
     async def get_bill_text(self, products_dict, cart_total, archived_date):
         if not products_dict:
             return ""
-        prod_count_sum = sum(products_dict.values())
         bill = f"""
                 ORDER TIME: {archived_date.strftime(BotService.datetime_fmt)}
                 TOTAL: {cart_total}
-                PRODUCTS: {prod_count_sum}
                 ##########################"""
         for product, count in products_dict.items():
+            product = session.query(Product).filter_by(id=product).first()
+            qty = session.query(CartProduct).filter_by(cart=products_dict[product.id].cart, product=product.id).all()
             bill += f"""
                 TITLE: {product.title}
-                QTY: {products_dict[product]}
+                QTY: {len(qty)}
                 PRICE: {product.get_price_str()}
-                TOTAL: {product.get_total_str(products_dict[product])}
+                TOTAL: {product.get_total_str(len(qty))}
                 --------------------------"""
         return bill
 
     async def subtract_qty(self, products_dict):
         for product, qty in products_dict.items():
+            product = session.query(Product).filter_by(id=product).first()
+            qty = len(session.query(CartProduct).filter_by(cart=products_dict[product.id].cart, product=product.id).all())
             product.in_stock -= qty
             product.save()
 

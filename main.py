@@ -118,7 +118,7 @@ async def personal_info(call):
 @dp.callback_query_handler(lambda call: True)
 async def get_cat_or_products(call):
     if call.data == START_KB['categories']:
-        return  bs.view_root_categories(call.message)
+        return await bs.view_root_categories(call.message)
     await bs.show_categories(call.data, message=call.message)
 
 

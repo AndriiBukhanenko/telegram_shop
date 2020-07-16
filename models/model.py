@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship, sessionmaker
 Base = declarative_base()
 Session = sessionmaker()
 
-cursor = create_engine('mysql+pymysql://a0451596:tukeuxtime@141.8.192.58/a0451596_telegram_shop')
+cursor = create_engine('mysql+pymysql://a0451596:tukeuxtime@141.8.195.33/a0451596_telegram_shop')
 Session.configure(bind=cursor)
 
 session = Session()
@@ -67,9 +67,11 @@ class Cart(Base, CRUD):
 
 
     def get_size(self):
-        return self.get_cart_products().count()
+        # a =self.get_cart_products()
+        return len(self.get_cart_products())
 
     def get_cart_products(self):
+        a =session.query(CartProduct).filter_by(cart=self.id).all()
         return session.query(CartProduct).filter_by(cart=self.id).all()
 
     def get_cart_products_freq_dict(self):
@@ -164,7 +166,7 @@ class Category(Base, CRUD):
         return self.title
 
 
-class Product(Base):
+class Product(Base, CRUD):
     __tablename__ = 'Product'
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(255), nullable=False)
@@ -194,7 +196,8 @@ class Product(Base):
         return self.get_price_str()
 
     def get_total_str(self, qty):
-        return str(round(((self.get_price() * qty) / 100), 2)) + ' UAH'
+        product = session.query(Product).filter_by(id=self.id).first()
+        return str(round(((product.get_price() * qty) / 100), 2)) + ' UAH'
 
 
 if __name__ == '__main__':
