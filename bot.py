@@ -1,6 +1,6 @@
 from aiogram import Bot, types
 
-from models.model import Category
+from models_t.model import Category
 
 
 class TGBot(Bot):

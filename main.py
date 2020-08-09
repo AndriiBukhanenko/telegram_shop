@@ -93,6 +93,9 @@ async def show_cart(message):
 async def cart_actions(call):
     await bs.cart_actions(call)
 
+@dp.callback_query_handler(lambda call: call.data.split('_')[0] == 'page')
+async def cart_actions(call):
+    await bs.page_actions(call)
 
 @dp.callback_query_handler(lambda call: call.data == 'order')
 async def order(call):

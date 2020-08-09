@@ -7,6 +7,18 @@ from keyboards import START_KB
 from models.model import Category, Product, Cart, CartProduct, User, session
 
 
+from woocommerce import API
+
+
+wcapi = API(
+    url="http://wp.tigzver.ru.xsph.ru/",
+    consumer_key="ck_dfc4d91ffa849991dd1dc72a150bdde13d447f96",
+    consumer_secret="cs_a1159c7cd22a6e66ca4b1e72c4c41392075a6e48",
+    query_string_auth=True,
+    version="wc/v2"
+)
+
+
 class BotService:
     datetime_fmt = "%Y-%m-%d %H:%M:%S"
 
@@ -23,8 +35,48 @@ class BotService:
 
     async def view_root_categories(self, message):
         cats = session.query(Category).filter_by(is_root=True)
+
+        from woocommerce import API
+        import time
+
+        # from urllib.parse import urlencode
+        #
+        # store_url = 'http://wp.tigzver.ru.xsph.ru/'
+        # endpoint = '/wc-auth/v1/authorize'
+        # params = {
+        #     "app_name": "My App Name",
+        #     "scope": "read_write",
+        #     "user_id": 123,
+        #     "return_url": "http://app.com/return-page",
+        #     "callback_url": "https://app.com/callback-endpoint"
+        # }
+        # query_string = urlencode(params)
+        #
+        # print("%s%s?%s" % (store_url, endpoint, query_string))
+
+        wcapi = API(
+            url="http://wp.tigzver.ru.xsph.ru/",
+            consumer_key="ck_dfc4d91ffa849991dd1dc72a150bdde13d447f96",
+            consumer_secret="cs_a1159c7cd22a6e66ca4b1e72c4c41392075a6e48",
+            query_string_auth=True,
+            version="wc/v3"
+        )
+
+
+        categories = [{'id': 1153, 'name': 'Парфюмерия', 'slug': '%d0%bf%d0%b0%d1%80%d1%84%d1%8e%d0%bc%d0%b5%d1%80%d0%b8%d1%8f', 'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}}, {'id': 1154, 'name': 'Atelier Cologne', 'slug': 'atelier-cologne', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1154'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1155, 'name': 'Atelier Des Ors', 'slug': 'atelier-des-ors', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1155'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1156, 'name': "Etat Libre d'Orange", 'slug': 'etat-libre-dorange', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1156'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1157, 'name': 'Evody Parfums', 'slug': 'evody-parfums', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1157'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1158, 'name': 'Histoires de Parfums', 'slug': 'histoires-de-parfums', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1158'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1159, 'name': 'Hugh Parsons', 'slug': 'hugh-parsons', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1159'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1160, 'name': 'I love New York by Bond №9', 'slug': 'i-love-new-york-by-bond-%e2%84%969', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1160'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1161, 'name': "I Profumi di D'Annunzio", 'slug': 'i-profumi-di-dannunzio', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1161'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1162, 'name': 'Jeroboam', 'slug': 'jeroboam', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1162'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1163, 'name': 'Jovoy', 'slug': 'jovoy', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1163'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1164, 'name': 'JUSBOX perfumes', 'slug': 'jusbox-perfumes', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1164'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1165, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1165'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1166, 'name': 'Lucien Ferrero Maître Parfumeur', 'slug': 'lucien-ferrero-maitre-parfumeur', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1166'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1167, 'name': 'Miller et Bertaux', 'slug': 'miller-et-bertaux', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1167'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1168, 'name': 'Moresque Parfum', 'slug': 'moresque-parfum', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1168'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1169, 'name': 'Olibere', 'slug': 'olibere', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1169'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1170, 'name': 'Paglieri 1876', 'slug': 'paglieri-1876', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1170'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1171, 'name': 'Panama 1924', 'slug': 'panama-1924', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1171'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1172, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1172'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1173, 'name': 'Parfums d’Orsay', 'slug': 'parfums-dorsay', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1173'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1174, 'name': 'Parfums Houbigant Paris', 'slug': 'parfums-houbigant-paris', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1174'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1175, 'name': 'Perris Monte Carlo', 'slug': 'perris-monte-carlo', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1175'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1176, 'name': 'Pineider', 'slug': 'pineider', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1176'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1177, 'name': 'Teo Cabanel', 'slug': 'teo-cabanel', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1177'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1178, 'name': 'The Different Company', 'slug': 'the-different-company', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1178'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1179, 'name': 'The House Of Oud', 'slug': 'the-house-of-oud', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1179'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1180, 'name': 'The Merchant of Venice', 'slug': 'the-merchant-of-venice', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1180'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1181, 'name': 'Wide Society', 'slug': 'wide-society', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1181'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1182, 'name': 'Ароматы для дома', 'slug': '%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}}, {'id': 1183, 'name': 'Jovoy', 'slug': 'jovoy-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1183'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1184, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1184'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1185, 'name': 'Miller et Bertaux', 'slug': 'miller-et-bertaux-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1185'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1186, 'name': 'Moresque Parfum', 'slug': 'moresque-parfum-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1186'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1187, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1187'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1188, 'name': 'Pineider', 'slug': 'pineider-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1188'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1189, 'name': 'The Different Company', 'slug': 'the-different-company-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1189'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1190, 'name': 'Уход', 'slug': '%d1%83%d1%85%d0%be%d0%b4', 'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}}, {'id': 1191, 'name': '4711', 'slug': '4711', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1191'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1192, 'name': 'Erborian', 'slug': 'erborian', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1192'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1193, 'name': 'Hugh Parsons', 'slug': 'hugh-parsons-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1193'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1194, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1194'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1195, 'name': 'Panama 1924', 'slug': 'panama-1924-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1195'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1196, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1196'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1197, 'name': 'Parfums Houbigant Paris', 'slug': 'parfums-houbigant-paris-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1197'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}]
+
+
+        cats = []
+        for cat in categories:
+            if str(cat['parent']) == '0':
+                cats.append(cat)
+
+        print(cats)
+
+
+
         kb = InlineKeyboardMarkup()
-        buttons = [InlineKeyboardButton(text=cat.title, callback_data=str(cat.id)) for cat in cats]
+        buttons = [InlineKeyboardButton(text=cat['name'], callback_data=str(cat['id'])) for cat in cats]
         buttons.append(InlineKeyboardButton(text="Поиск товаров по названию", switch_inline_query_current_chat=''))
         kb.add(*buttons)
         if message.from_user.is_bot:
@@ -39,32 +91,62 @@ class BotService:
         kb = InlineKeyboardMarkup()
         title_text = ' | Категории:'
         # category = Category.objects.get(id=data)
-        category = session.query(Category).filter_by(id=data).first()
+        # category = session.query(Category).filter_by(id=data).first()
+
+        # parameter = {}
+        # parameter['per_page'] = 100
+        # a = wcapi.get("products/categories/", params=parameter).json()
+        #
+        # parameter = {}
+        # parameter['page'] = 1
+        # b = wcapi.get("products/categories/", params=parameter).json()
+        #
+        # parameter = {}
+        # parameter['per_page'] = 100
+        # c = wcapi.get("products/", params=parameter).json()
+
+        category = []
+        is_root = False
+        for item in wcapi.get("products/categories/", params={'per_page': 100}).json():
+            if str(item['parent']) == str(data):
+                category.append(item)
+                is_root = True
+
         buttons = []
 
-        if category.sub_categories:
+        if category:
             buttons = []
-            for cat in category.sub_categories:
-                if cat.sub_categories:
-                    buttons.append(InlineKeyboardButton(text=cat.title, callback_data=str(cat.id)))
+            for cat in category:
+                if cat:
+                    buttons.append(InlineKeyboardButton(text=cat['name'], callback_data=cat['id']))
                     continue
                 buttons.append(
-                    InlineKeyboardButton(text=cat.title,
-                                         switch_inline_query_current_chat='category_' + str(cat.title)))
+                    InlineKeyboardButton(text=cat['name'],
+                                         switch_inline_query_current_chat='category_' + str(cat['name'])))
 
-        if not category.is_root:
-            buttons.append(InlineKeyboardButton(text='<<< Назад', callback_data=str(category.parent.id)))
+        if not is_root:
+            buttons.append(InlineKeyboardButton(text='<<< Назад', callback_data=str(data)))
         buttons.append(InlineKeyboardButton(text='^ В начало', callback_data=START_KB['categories']))
         kb.add(*buttons)
 
-        if not category.sub_categories:
+        this_category = wcapi.get(f"products/categories/{data}").json()
+
+        if not is_root:
+            root_category = wcapi.get(f"products/categories/{this_category['parent']}").json()
+        else:
+            root_category = wcapi.get(f"products/categories/{data}").json()
+
+        if not is_root:
             title_text = ' | Товары:'
-            await self.show_products_inline(category.get_products(), message.chat.id)
-            await self._bot.delete_message(message.chat.id, message.message_id)
-            await self._bot.send_message(message.chat.id, category.title + title_text, reply_markup=kb)
+
+            products = wcapi.get("products/", params={'per_page': 10}).json()
+
+            await self.show_page(message, products)
+            # await self._bot.delete_message(message.chat.id, message.message_id)
+            # await self._bot.send_message(message.chat.id, root_category['name'] + title_text, reply_markup=kb)
             return
 
-        await self._bot.edit_message_text(category.title + title_text,
+        await self._bot.edit_message_text(root_category['name'] + title_text,
                                           message_id=message.message_id,
                                           chat_id=message.chat.id,
                                           reply_markup=kb)
@@ -72,11 +154,11 @@ class BotService:
     @staticmethod
     async def get_product_desc_for_message(product, inline=False):
         return f"""
-                {'<b>TITLE</b>:' + product.title if not inline else ''} 
-                <b>DESC</b>: {product.description} 
-                <b>PRICE</b>:  {product.get_price_markdown_str()}
-                <b>IN_STOCK</b>: {product.in_stock}
-                {"<a href='" + product.img_url + "'>&#8205</a>" if product.img_url else ''}
+                {'<b>TITLE</b>:' + product['name'] if not inline else ''} 
+                <b>DESC</b>: {product['description']} 
+                <b>PRICE</b>:  {product['price']}
+               
+                {"<a href='" + product['images'][0]['src'] + "'>&#8205</a>" if product['images'][0]['src'] else ''}
                 """
 
     async def show_products(self, products, chat_id):
@@ -93,25 +175,81 @@ class BotService:
         results = []
         for i, product in enumerate(products):
             kb = InlineKeyboardMarkup()
-            button = InlineKeyboardButton(text='В корзину', callback_data='product_' + str(product.id))
+            button = InlineKeyboardButton(text='В корзину', callback_data='product_' + str(product['id']))
             kb.add(button)
 
             temp_res = InlineQueryResultArticle(
                 id=i + 1,
-                title=product.title + f' | {product.in_stock}',
-                description=product.description + ' ' + product.get_price_str() + ' QTY: ' + str(product.in_stock),
+                title='qqq',#product['name'],  #+ f' | {product.in_stock}',
+                description='good1', #product['description'] + ' ' + product['price'], #+ ' QTY: ' + str(product.in_stock),
                 input_message_content=InputTextMessageContent(
                     parse_mode='HTML',
                     disable_web_page_preview=False,
-                    message_text=await self.get_product_desc_for_message(product, True)
+                    message_text='good'   #await self.get_product_desc_for_message(product, True)
                 ),
-                thumb_url=product.img_url if product.img_url else '',
+                thumb_url="",#product['images'][0]['src'] if product['images'][0]['src'] else '',
                 reply_markup=kb
 
             )
             results.append(temp_res)
         if results:
             await self._bot.answer_inline_query(query_id, results, cache_time=0)
+
+
+    async def page_actions(self, call):
+        action = call.data.split('_')[1]
+        user_id = str(call.message.chat.id)
+
+        if action == 'nothing':
+            return
+
+        if action == 'remove':
+            await self._bot.delete_message(user_id, message_id=call.message.message_id)
+            return
+
+        reply_markup = call.message['reply_markup']
+        rp_t = reply_markup['inline_keyboard'][0][1]['text']
+
+        if action == 'increase':
+            rp_t = str(int(rp_t) + 1)
+
+        if action == 'decrease':
+            rp_t = str(int(rp_t) - 1)
+            if rp_t == '0':
+                return await self._bot.answer_callback_query(call.id, show_alert=True,
+                                                             text=f"Первая страница")
+
+        products = wcapi.get("products", params={'page': int(rp_t)}).json()
+
+        if len(products) == 0:
+            return await self._bot.answer_callback_query(call.id, show_alert=True,
+                                                         text=f"Последняя страница")
+
+        reply_markup['inline_keyboard'][0][1]['text'] = rp_t
+        cart_prod_text = [f'{product["name"]}\n' \
+                          f'Price: {product["price"]}\n' for product in products]
+
+        await self._bot.edit_message_text(text=cart_prod_text, chat_id=user_id, message_id=call.message.message_id,
+                                          reply_markup=reply_markup)
+
+
+    async def show_page(self, message, products):
+        user_id = str(message.chat.id)
+        cart_prod_text = [f'{product["name"]}\n' \
+                          f'Price: {product["price"]}\n' for product in products]
+
+        kb = InlineKeyboardMarkup()
+        buttons = [
+            InlineKeyboardButton(text=u'\U00002796', callback_data='page_decrease_') ,#+ str(key)),
+            InlineKeyboardButton(text=str(1), callback_data='page_nothing'),
+            InlineKeyboardButton(text=u'\U00002795', callback_data='page_increase_'),# + str(key)),
+            InlineKeyboardButton(text=u'\U0000274C', callback_data='page_remove_' )#+ str(key))
+        ]
+        kb.add(*buttons)
+        await self._bot.send_message(user_id, cart_prod_text, reply_markup=kb)
+
+
+
 
     async def cart_actions(self, call):
         action = call.data.split('_')[1]

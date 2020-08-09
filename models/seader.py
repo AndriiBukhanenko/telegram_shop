@@ -1,4 +1,4 @@
-from models.model import Category, Cart, Product, CartProduct
+from models_t.model import Category, Cart, Product, CartProduct
 
 categories_json = {
     'Phones': {

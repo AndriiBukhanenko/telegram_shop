@@ -2,7 +2,7 @@ from datetime import datetime
 
 from mongoengine import *
 
-from models.utils import db_connect
+from models_t.utils import db_connect
 
 connect('shop_db')
 
