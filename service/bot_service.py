@@ -6,9 +6,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeybo
 from keyboards import START_KB
 from models.model import Category, Product, Cart, CartProduct, User, session
 
-
 from woocommerce import API
-
 
 wcapi = API(
     url="http://wp.tigzver.ru.xsph.ru/",
@@ -62,9 +60,237 @@ class BotService:
             version="wc/v3"
         )
 
-
-        categories = [{'id': 1153, 'name': 'Парфюмерия', 'slug': '%d0%bf%d0%b0%d1%80%d1%84%d1%8e%d0%bc%d0%b5%d1%80%d0%b8%d1%8f', 'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}}, {'id': 1154, 'name': 'Atelier Cologne', 'slug': 'atelier-cologne', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1154'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1155, 'name': 'Atelier Des Ors', 'slug': 'atelier-des-ors', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1155'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1156, 'name': "Etat Libre d'Orange", 'slug': 'etat-libre-dorange', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1156'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1157, 'name': 'Evody Parfums', 'slug': 'evody-parfums', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1157'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1158, 'name': 'Histoires de Parfums', 'slug': 'histoires-de-parfums', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1158'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1159, 'name': 'Hugh Parsons', 'slug': 'hugh-parsons', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1159'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1160, 'name': 'I love New York by Bond №9', 'slug': 'i-love-new-york-by-bond-%e2%84%969', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1160'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1161, 'name': "I Profumi di D'Annunzio", 'slug': 'i-profumi-di-dannunzio', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1161'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1162, 'name': 'Jeroboam', 'slug': 'jeroboam', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1162'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1163, 'name': 'Jovoy', 'slug': 'jovoy', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1163'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1164, 'name': 'JUSBOX perfumes', 'slug': 'jusbox-perfumes', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1164'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1165, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1165'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1166, 'name': 'Lucien Ferrero Maître Parfumeur', 'slug': 'lucien-ferrero-maitre-parfumeur', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1166'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1167, 'name': 'Miller et Bertaux', 'slug': 'miller-et-bertaux', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1167'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1168, 'name': 'Moresque Parfum', 'slug': 'moresque-parfum', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1168'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1169, 'name': 'Olibere', 'slug': 'olibere', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1169'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1170, 'name': 'Paglieri 1876', 'slug': 'paglieri-1876', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1170'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1171, 'name': 'Panama 1924', 'slug': 'panama-1924', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1171'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1172, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1172'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1173, 'name': 'Parfums d’Orsay', 'slug': 'parfums-dorsay', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1173'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1174, 'name': 'Parfums Houbigant Paris', 'slug': 'parfums-houbigant-paris', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1174'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1175, 'name': 'Perris Monte Carlo', 'slug': 'perris-monte-carlo', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1175'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1176, 'name': 'Pineider', 'slug': 'pineider', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1176'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1177, 'name': 'Teo Cabanel', 'slug': 'teo-cabanel', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1177'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1178, 'name': 'The Different Company', 'slug': 'the-different-company', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1178'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1179, 'name': 'The House Of Oud', 'slug': 'the-house-of-oud', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1179'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1180, 'name': 'The Merchant of Venice', 'slug': 'the-merchant-of-venice', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1180'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1181, 'name': 'Wide Society', 'slug': 'wide-society', 'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1181'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}}, {'id': 1182, 'name': 'Ароматы для дома', 'slug': '%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}}, {'id': 1183, 'name': 'Jovoy', 'slug': 'jovoy-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1183'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1184, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1184'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1185, 'name': 'Miller et Bertaux', 'slug': 'miller-et-bertaux-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1185'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1186, 'name': 'Moresque Parfum', 'slug': 'moresque-parfum-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1186'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1187, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1187'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1188, 'name': 'Pineider', 'slug': 'pineider-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1188'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1189, 'name': 'The Different Company', 'slug': 'the-different-company-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0', 'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1189'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}}, {'id': 1190, 'name': 'Уход', 'slug': '%d1%83%d1%85%d0%be%d0%b4', 'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}}, {'id': 1191, 'name': '4711', 'slug': '4711', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1191'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1192, 'name': 'Erborian', 'slug': 'erborian', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1192'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1193, 'name': 'Hugh Parsons', 'slug': 'hugh-parsons-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1193'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1194, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1194'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1195, 'name': 'Panama 1924', 'slug': 'panama-1924-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1195'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1196, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1196'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}, {'id': 1197, 'name': 'Parfums Houbigant Paris', 'slug': 'parfums-houbigant-paris-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0, '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1197'}], 'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}], 'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}]
-
+        categories = [
+            {'id': 1153, 'name': 'Парфюмерия', 'slug': '%d0%bf%d0%b0%d1%80%d1%84%d1%8e%d0%bc%d0%b5%d1%80%d0%b8%d1%8f',
+             'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}},
+            {'id': 1154, 'name': 'Atelier Cologne', 'slug': 'atelier-cologne', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1154'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1155, 'name': 'Atelier Des Ors', 'slug': 'atelier-des-ors', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1155'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1156, 'name': "Etat Libre d'Orange", 'slug': 'etat-libre-dorange', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1156'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1157, 'name': 'Evody Parfums', 'slug': 'evody-parfums', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1157'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1158, 'name': 'Histoires de Parfums', 'slug': 'histoires-de-parfums', 'parent': 1153,
+             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1158'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1159, 'name': 'Hugh Parsons', 'slug': 'hugh-parsons', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1159'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1160, 'name': 'I love New York by Bond №9', 'slug': 'i-love-new-york-by-bond-%e2%84%969',
+             'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1160'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1161, 'name': "I Profumi di D'Annunzio", 'slug': 'i-profumi-di-dannunzio', 'parent': 1153,
+             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1161'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1162, 'name': 'Jeroboam', 'slug': 'jeroboam', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1162'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1163, 'name': 'Jovoy', 'slug': 'jovoy', 'parent': 1153, 'description': '', 'display': 'default',
+             'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1163'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1164, 'name': 'JUSBOX perfumes', 'slug': 'jusbox-perfumes', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1164'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1165, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo', 'parent': 1153,
+             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1165'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1166, 'name': 'Lucien Ferrero Maître Parfumeur', 'slug': 'lucien-ferrero-maitre-parfumeur',
+             'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1166'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1167, 'name': 'Miller et Bertaux', 'slug': 'miller-et-bertaux', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1167'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1168, 'name': 'Moresque Parfum', 'slug': 'moresque-parfum', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1168'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1169, 'name': 'Olibere', 'slug': 'olibere', 'parent': 1153, 'description': '', 'display': 'default',
+             'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1169'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1170, 'name': 'Paglieri 1876', 'slug': 'paglieri-1876', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1170'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1171, 'name': 'Panama 1924', 'slug': 'panama-1924', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1171'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1172, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1172'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1173, 'name': 'Parfums d’Orsay', 'slug': 'parfums-dorsay', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1173'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1174, 'name': 'Parfums Houbigant Paris', 'slug': 'parfums-houbigant-paris', 'parent': 1153,
+             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1174'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1175, 'name': 'Perris Monte Carlo', 'slug': 'perris-monte-carlo', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1175'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1176, 'name': 'Pineider', 'slug': 'pineider', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1176'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1177, 'name': 'Teo Cabanel', 'slug': 'teo-cabanel', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1177'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1178, 'name': 'The Different Company', 'slug': 'the-different-company', 'parent': 1153,
+             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1178'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1179, 'name': 'The House Of Oud', 'slug': 'the-house-of-oud', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1179'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1180, 'name': 'The Merchant of Venice', 'slug': 'the-merchant-of-venice', 'parent': 1153,
+             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1180'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1181, 'name': 'Wide Society', 'slug': 'wide-society', 'parent': 1153, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1181'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
+            {'id': 1182, 'name': 'Ароматы для дома',
+             'slug': '%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
+             'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}},
+            {'id': 1183, 'name': 'Jovoy',
+             'slug': 'jovoy-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
+             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1183'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
+            {'id': 1184, 'name': 'Laboratorio Olfattivo',
+             'slug': 'laboratorio-olfattivo-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
+             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1184'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
+            {'id': 1185, 'name': 'Miller et Bertaux',
+             'slug': 'miller-et-bertaux-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
+             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1185'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
+            {'id': 1186, 'name': 'Moresque Parfum',
+             'slug': 'moresque-parfum-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
+             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1186'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
+            {'id': 1187, 'name': 'Parfums De Marly',
+             'slug': 'parfums-de-marly-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
+             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1187'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
+            {'id': 1188, 'name': 'Pineider',
+             'slug': 'pineider-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
+             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1188'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
+            {'id': 1189, 'name': 'The Different Company',
+             'slug': 'the-different-company-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
+             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1189'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
+            {'id': 1190, 'name': 'Уход', 'slug': '%d1%83%d1%85%d0%be%d0%b4', 'parent': 0, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}},
+            {'id': 1191, 'name': '4711', 'slug': '4711', 'parent': 1190, 'description': '', 'display': 'default',
+             'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1191'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
+            {'id': 1192, 'name': 'Erborian', 'slug': 'erborian', 'parent': 1190, 'description': '',
+             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1192'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
+            {'id': 1193, 'name': 'Hugh Parsons', 'slug': 'hugh-parsons-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190,
+             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1193'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
+            {'id': 1194, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo-%d1%83%d1%85%d0%be%d0%b4',
+             'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1194'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
+            {'id': 1195, 'name': 'Panama 1924', 'slug': 'panama-1924-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190,
+             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1195'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
+            {'id': 1196, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly-%d1%83%d1%85%d0%be%d0%b4',
+             'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1196'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
+            {'id': 1197, 'name': 'Parfums Houbigant Paris', 'slug': 'parfums-houbigant-paris-%d1%83%d1%85%d0%be%d0%b4',
+             'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
+             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1197'}],
+                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
+                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}]
 
         cats = []
         for cat in categories:
@@ -72,8 +298,6 @@ class BotService:
                 cats.append(cat)
 
         print(cats)
-
-
 
         kb = InlineKeyboardMarkup()
         buttons = [InlineKeyboardButton(text=cat['name'], callback_data=str(cat['id'])) for cat in cats]
@@ -180,14 +404,15 @@ class BotService:
 
             temp_res = InlineQueryResultArticle(
                 id=i + 1,
-                title='qqq',#product['name'],  #+ f' | {product.in_stock}',
-                description='good1', #product['description'] + ' ' + product['price'], #+ ' QTY: ' + str(product.in_stock),
+                title='qqq',  # product['name'],  #+ f' | {product.in_stock}',
+                description='good1',
+                # product['description'] + ' ' + product['price'], #+ ' QTY: ' + str(product.in_stock),
                 input_message_content=InputTextMessageContent(
                     parse_mode='HTML',
                     disable_web_page_preview=False,
-                    message_text='good'   #await self.get_product_desc_for_message(product, True)
+                    message_text='good'  # await self.get_product_desc_for_message(product, True)
                 ),
-                thumb_url="",#product['images'][0]['src'] if product['images'][0]['src'] else '',
+                thumb_url="",  # product['images'][0]['src'] if product['images'][0]['src'] else '',
                 reply_markup=kb
 
             )
@@ -195,10 +420,11 @@ class BotService:
         if results:
             await self._bot.answer_inline_query(query_id, results, cache_time=0)
 
-
     async def page_actions(self, call):
         action = call.data.split('_')[1]
         user_id = str(call.message.chat.id)
+
+        message_id = call.data.split(',')[1:]
 
         if action == 'nothing':
             return
@@ -226,30 +452,38 @@ class BotService:
                                                          text=f"Последняя страница")
 
         reply_markup['inline_keyboard'][0][1]['text'] = rp_t
-        cart_prod_text = [f'{product["name"]}\n' \
-                          f'Price: {product["price"]}\n' for product in products]
+        for product, mess_id in zip(products, message_id):
+            cart_prod_text = f"""{product["name"]}' \
+                                       'Price: {product["price"]}
+                                       {"<a href='" + product['images'][0]['src'] + "'>&#8205</a>" if product['images'][0]['src'] else ''}"""
+            await self._bot.edit_message_text(text=cart_prod_text, chat_id=user_id, message_id=mess_id,
+                                              reply_markup=reply_markup)
 
-        await self._bot.edit_message_text(text=cart_prod_text, chat_id=user_id, message_id=call.message.message_id,
+        await self._bot.edit_message_text(text="Страница:", chat_id=user_id, message_id=call.message.message_id,
                                           reply_markup=reply_markup)
-
 
     async def show_page(self, message, products):
         user_id = str(message.chat.id)
-        cart_prod_text = [f'{product["name"]}\n' \
-                          f'Price: {product["price"]}\n' for product in products]
+
+        message_id = []
+        for product in products:
+            cart_prod_text = f"""{product["name"]}' \
+                                       'Price: {product["price"]}
+                                       {"<a href='" + product['images'][0]['src'] + "'>&#8205</a>" if product['images'][0]['src'] else ''}"""
+            message = await self._bot.send_message(user_id, cart_prod_text)
+            message_id.append(str(message.message_id))
+
+        key =','.join(message_id)
 
         kb = InlineKeyboardMarkup()
         buttons = [
-            InlineKeyboardButton(text=u'\U00002796', callback_data='page_decrease_') ,#+ str(key)),
+            InlineKeyboardButton(text=u'\U00002796', callback_data='page_decrease_,' + str(key)),
             InlineKeyboardButton(text=str(1), callback_data='page_nothing'),
-            InlineKeyboardButton(text=u'\U00002795', callback_data='page_increase_'),# + str(key)),
-            InlineKeyboardButton(text=u'\U0000274C', callback_data='page_remove_' )#+ str(key))
+            InlineKeyboardButton(text=u'\U00002795', callback_data='page_increase_,' + str(key)),
+            InlineKeyboardButton(text=u'\U0000274C', callback_data='page_remove_,' + str(key))
         ]
         kb.add(*buttons)
-        await self._bot.send_message(user_id, cart_prod_text, reply_markup=kb)
-
-
-
+        await self._bot.send_message(user_id, 'Страница:', reply_markup=kb)
 
     async def cart_actions(self, call):
         action = call.data.split('_')[1]
@@ -309,16 +543,16 @@ class BotService:
         user = await BotService.get_user_by_telegram_id(message.from_user.id)
         user_cart = self.get_cart_by_user(user)
         if not user_cart or user_cart.get_size() == 0:
-        # if not user_cart:
+            # if not user_cart:
             return await self._bot.send_message(user_id, 'No articles yet in cart')
 
-        frequencies = user_cart.get_cart_products() #.item_frequencies('product')
+        frequencies = user_cart.get_cart_products()  # .item_frequencies('product')
         frequencies = {fre.product: fre for fre in frequencies}
         products_dict = {cart_product.product: cart_product for cart_product in user_cart.get_cart_products()}
         # products_dict = {print(cart_product.product) for cart_product in user_cart.get_cart_products()}
         for key, cart_product in products_dict.items():
             # qty = frequencies[key]
-            qty =1 # fiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiix
+            qty = 1  # fiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiix
             product = session.query(Product).filter_by(id=key).first()
             # cart_prod_text = f'{cart_product.product.title}\n' \
             #                  f'Qty: {cart_product.product.in_stock}\n' \
@@ -420,11 +654,11 @@ class BotService:
         query_res = session.query(Cart).filter_by(user=user.telegram_id, is_archived=False).first()
         # return query_res.first() if query_res else Cart.objects.create(user=user)
         if query_res:
-                return query_res
+            return query_res
         else:
-                session.add(Cart(user=user.telegram_id))
-                session.commit()
-                return session.query(Cart).filter_by(user=user.telegram_id, is_archived=False).first()
+            session.add(Cart(user=user.telegram_id))
+            session.commit()
+            return session.query(Cart).filter_by(user=user.telegram_id, is_archived=False).first()
 
     async def show_total(self, call):
         user = await BotService.get_user_by_telegram_id(call.from_user.id)
@@ -505,7 +739,8 @@ class BotService:
     async def subtract_qty(self, products_dict):
         for product, qty in products_dict.items():
             product = session.query(Product).filter_by(id=product).first()
-            qty = len(session.query(CartProduct).filter_by(cart=products_dict[product.id].cart, product=product.id).all())
+            qty = len(
+                session.query(CartProduct).filter_by(cart=products_dict[product.id].cart, product=product.id).all())
             product.in_stock -= qty
             product.save()
 
