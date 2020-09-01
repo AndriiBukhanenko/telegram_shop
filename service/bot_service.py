@@ -265,11 +265,16 @@ class BotService:
     async def cart_actions(self, call):
         action = call.data.split('_')[1]
 
+        try:
+            total_msg = call.message.reply_markup.inline_keyboard[0][1].callback_data.split('+')[1]
+        except:
+            total_msg = 0
+
         if action == 'drop':
             carts = session.query(WpCart).filter_by(telegram_id=call.from_user.id).all()
             for cart in carts:
                 cart.destroy()
-            await self._bot.delete_message(call.id, message_id=call.message.message_id)
+
             return await self._bot.answer_callback_query(call.id, text=f"✔ Все заказы удалены !")
 
         product_id = str(call.data.split('_')[2])
@@ -321,6 +326,21 @@ class BotService:
         await self._bot.edit_message_text(text=cart_prod_text, chat_id=user_id, message_id=call.message.message_id,
                                           reply_markup=reply_markup)
 
+        if total_msg:
+            cart = session.query(WpCart).filter_by(telegram_id=call.from_user.id).all()
+            total_sum = 0
+            for item in cart:
+                product = wcapi.get(f"products/{item.product_id}").json()
+                total_sum = total_sum + int(product['price']) * int(item.quantity)
+            kb = InlineKeyboardMarkup()
+            kb.add(InlineKeyboardButton(text=f'Итог: {total_sum} грн.', callback_data='total'))
+            kb.add(
+                InlineKeyboardButton(text='Сделать заказ ' + u'\U00002714', callback_data='order'),
+                InlineKeyboardButton(text='Удалить все  ' + u'\U0000274C', callback_data='cart_drop'),
+            )
+            await self._bot.edit_message_text(text='Заказ:', chat_id=user_id, message_id=total_msg,
+                                              reply_markup=kb)
+
     async def show_cart(self, message):
         user_id = str(message.chat.id)
         carts = session.query(WpCart).filter_by(telegram_id=user_id).all()
@@ -347,7 +367,7 @@ class BotService:
             total_sum = total_sum + int(product['price']) * int(cart_product.quantity)
 
             kb.add(*buttons)
-            await self._bot.send_message(user_id, cart_prod_text, reply_markup=kb)
+            edit_msg = await self._bot.send_message(user_id, cart_prod_text, reply_markup=kb)
 
         kb = InlineKeyboardMarkup()
         kb.add(InlineKeyboardButton(text=f'Итог: {total_sum} грн.', callback_data='total'))
@@ -356,7 +376,20 @@ class BotService:
             InlineKeyboardButton(text='Удалить все  ' + u'\U0000274C', callback_data='cart_drop'),
         )
 
-        await self._bot.send_message(user_id, 'Заказ:', reply_markup=kb)
+        msg_id = await self._bot.send_message(user_id, 'Заказ:', reply_markup=kb)
+
+        kb = InlineKeyboardMarkup()
+        buttons = [
+            InlineKeyboardButton(text=u'\U00002796', callback_data='cart_decrease_' + str(product['id'])),
+            InlineKeyboardButton(text=str(cart_product.quantity), callback_data='cart_nothing+' + str(msg_id['message_id'])),
+            InlineKeyboardButton(text=u'\U00002795', callback_data='cart_increase_' + str(product['id'])),
+            InlineKeyboardButton(text=u'\U0000274C', callback_data='cart_remove_' + str(product['id']))
+        ]
+
+        kb.add(*buttons)
+
+        await self._bot.edit_message_text(text=cart_prod_text, chat_id=user_id, message_id=edit_msg['message_id'],
+                                          reply_markup=kb)
 
     async def add_to_cart(self, call):
         is_archived = session.query(WpCart).filter_by(telegram_id=call.from_user.id,
@@ -498,9 +531,9 @@ class BotService:
             msg = ''
             for item in order['line_items']:
                 msg = msg + item['name'] + '\n'
-                msg = msg + 'Количество: ' + item['name'] + '\n'
-                msg = msg + 'Цена: ' + str(item['price']) + '\n'
-                msg = msg + '\n'
+                msg = msg + ' Количество: ' + item['name']
+                msg = msg + ' Цена: ' + str(item['price'])
+
 
             temp_res = InlineQueryResultArticle(
                 id=i + 1,
