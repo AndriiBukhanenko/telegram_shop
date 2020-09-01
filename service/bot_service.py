@@ -1,17 +1,29 @@
+import os
 from datetime import datetime
+import time
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton, \
     InputTextMessageContent, InlineQueryResultArticle
 
 from keyboards import START_KB
-from models.model import Category, Product, Cart, CartProduct, User, session
+from models.model import *
 
 from woocommerce import API
 
+from service.utils import *
+from dotenv import load_dotenv
+from pathlib import Path
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)
+
+url = os.getenv("url")
+consumer_key = os.getenv("consumer_key")
+consumer_secret = os.getenv("consumer_secret")
+
 wcapi = API(
-    url="http://wp.tigzver.ru.xsph.ru/",
-    consumer_key="ck_dfc4d91ffa849991dd1dc72a150bdde13d447f96",
-    consumer_secret="cs_a1159c7cd22a6e66ca4b1e72c4c41392075a6e48",
+    url=url,
+    consumer_key=consumer_key,
+    consumer_secret=consumer_secret,
     query_string_auth=True,
     version="wc/v2"
 )
@@ -32,276 +44,13 @@ class BotService:
         self._bot = bot_instanse
 
     async def view_root_categories(self, message):
-        cats = session.query(Category).filter_by(is_root=True)
-
-        from woocommerce import API
-        import time
-
-        # from urllib.parse import urlencode
-        #
-        # store_url = 'http://wp.tigzver.ru.xsph.ru/'
-        # endpoint = '/wc-auth/v1/authorize'
-        # params = {
-        #     "app_name": "My App Name",
-        #     "scope": "read_write",
-        #     "user_id": 123,
-        #     "return_url": "http://app.com/return-page",
-        #     "callback_url": "https://app.com/callback-endpoint"
-        # }
-        # query_string = urlencode(params)
-        #
-        # print("%s%s?%s" % (store_url, endpoint, query_string))
-
-        wcapi = API(
-            url="http://wp.tigzver.ru.xsph.ru/",
-            consumer_key="ck_dfc4d91ffa849991dd1dc72a150bdde13d447f96",
-            consumer_secret="cs_a1159c7cd22a6e66ca4b1e72c4c41392075a6e48",
-            query_string_auth=True,
-            version="wc/v3"
-        )
-
-        categories = [
-            {'id': 1153, 'name': 'Парфюмерия', 'slug': '%d0%bf%d0%b0%d1%80%d1%84%d1%8e%d0%bc%d0%b5%d1%80%d0%b8%d1%8f',
-             'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}},
-            {'id': 1154, 'name': 'Atelier Cologne', 'slug': 'atelier-cologne', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1154'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1155, 'name': 'Atelier Des Ors', 'slug': 'atelier-des-ors', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1155'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1156, 'name': "Etat Libre d'Orange", 'slug': 'etat-libre-dorange', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1156'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1157, 'name': 'Evody Parfums', 'slug': 'evody-parfums', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1157'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1158, 'name': 'Histoires de Parfums', 'slug': 'histoires-de-parfums', 'parent': 1153,
-             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1158'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1159, 'name': 'Hugh Parsons', 'slug': 'hugh-parsons', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1159'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1160, 'name': 'I love New York by Bond №9', 'slug': 'i-love-new-york-by-bond-%e2%84%969',
-             'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1160'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1161, 'name': "I Profumi di D'Annunzio", 'slug': 'i-profumi-di-dannunzio', 'parent': 1153,
-             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1161'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1162, 'name': 'Jeroboam', 'slug': 'jeroboam', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1162'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1163, 'name': 'Jovoy', 'slug': 'jovoy', 'parent': 1153, 'description': '', 'display': 'default',
-             'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1163'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1164, 'name': 'JUSBOX perfumes', 'slug': 'jusbox-perfumes', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1164'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1165, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo', 'parent': 1153,
-             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1165'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1166, 'name': 'Lucien Ferrero Maître Parfumeur', 'slug': 'lucien-ferrero-maitre-parfumeur',
-             'parent': 1153, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1166'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1167, 'name': 'Miller et Bertaux', 'slug': 'miller-et-bertaux', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1167'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1168, 'name': 'Moresque Parfum', 'slug': 'moresque-parfum', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1168'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1169, 'name': 'Olibere', 'slug': 'olibere', 'parent': 1153, 'description': '', 'display': 'default',
-             'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1169'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1170, 'name': 'Paglieri 1876', 'slug': 'paglieri-1876', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1170'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1171, 'name': 'Panama 1924', 'slug': 'panama-1924', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1171'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1172, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1172'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1173, 'name': 'Parfums d’Orsay', 'slug': 'parfums-dorsay', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1173'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1174, 'name': 'Parfums Houbigant Paris', 'slug': 'parfums-houbigant-paris', 'parent': 1153,
-             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1174'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1175, 'name': 'Perris Monte Carlo', 'slug': 'perris-monte-carlo', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1175'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1176, 'name': 'Pineider', 'slug': 'pineider', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1176'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1177, 'name': 'Teo Cabanel', 'slug': 'teo-cabanel', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1177'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1178, 'name': 'The Different Company', 'slug': 'the-different-company', 'parent': 1153,
-             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1178'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1179, 'name': 'The House Of Oud', 'slug': 'the-house-of-oud', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1179'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1180, 'name': 'The Merchant of Venice', 'slug': 'the-merchant-of-venice', 'parent': 1153,
-             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1180'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1181, 'name': 'Wide Society', 'slug': 'wide-society', 'parent': 1153, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1181'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1153'}]}},
-            {'id': 1182, 'name': 'Ароматы для дома',
-             'slug': '%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
-             'parent': 0, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}},
-            {'id': 1183, 'name': 'Jovoy',
-             'slug': 'jovoy-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
-             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1183'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
-            {'id': 1184, 'name': 'Laboratorio Olfattivo',
-             'slug': 'laboratorio-olfattivo-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
-             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1184'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
-            {'id': 1185, 'name': 'Miller et Bertaux',
-             'slug': 'miller-et-bertaux-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
-             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1185'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
-            {'id': 1186, 'name': 'Moresque Parfum',
-             'slug': 'moresque-parfum-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
-             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1186'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
-            {'id': 1187, 'name': 'Parfums De Marly',
-             'slug': 'parfums-de-marly-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
-             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1187'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
-            {'id': 1188, 'name': 'Pineider',
-             'slug': 'pineider-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
-             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1188'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
-            {'id': 1189, 'name': 'The Different Company',
-             'slug': 'the-different-company-%d0%b0%d1%80%d0%be%d0%bc%d0%b0%d1%82%d1%8b-%d0%b4%d0%bb%d1%8f-%d0%b4%d0%be%d0%bc%d0%b0',
-             'parent': 1182, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1189'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1182'}]}},
-            {'id': 1190, 'name': 'Уход', 'slug': '%d1%83%d1%85%d0%be%d0%b4', 'parent': 0, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}]}},
-            {'id': 1191, 'name': '4711', 'slug': '4711', 'parent': 1190, 'description': '', 'display': 'default',
-             'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1191'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
-            {'id': 1192, 'name': 'Erborian', 'slug': 'erborian', 'parent': 1190, 'description': '',
-             'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1192'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
-            {'id': 1193, 'name': 'Hugh Parsons', 'slug': 'hugh-parsons-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190,
-             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1193'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
-            {'id': 1194, 'name': 'Laboratorio Olfattivo', 'slug': 'laboratorio-olfattivo-%d1%83%d1%85%d0%be%d0%b4',
-             'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1194'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
-            {'id': 1195, 'name': 'Panama 1924', 'slug': 'panama-1924-%d1%83%d1%85%d0%be%d0%b4', 'parent': 1190,
-             'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1195'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
-            {'id': 1196, 'name': 'Parfums De Marly', 'slug': 'parfums-de-marly-%d1%83%d1%85%d0%be%d0%b4',
-             'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1196'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}},
-            {'id': 1197, 'name': 'Parfums Houbigant Paris', 'slug': 'parfums-houbigant-paris-%d1%83%d1%85%d0%be%d0%b4',
-             'parent': 1190, 'description': '', 'display': 'default', 'image': None, 'menu_order': 0, 'count': 0,
-             '_links': {'self': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1197'}],
-                        'collection': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories'}],
-                        'up': [{'href': 'http://wp.tigzver.ru.xsph.ru/wp-json/wc/v3/products/categories/1190'}]}}]
-
+        categories = wcapi.get("products/categories/", params={'per_page': 100}).json()
         cats = []
         for cat in categories:
-            if str(cat['parent']) == '0':
+            if str(cat['parent']) == '0' and cat['slug'] != 'uncategorized':
                 cats.append(cat)
-
-        print(cats)
-
         kb = InlineKeyboardMarkup()
         buttons = [InlineKeyboardButton(text=cat['name'], callback_data=str(cat['id'])) for cat in cats]
-        buttons.append(InlineKeyboardButton(text="Поиск товаров по названию", switch_inline_query_current_chat=''))
         kb.add(*buttons)
         if message.from_user.is_bot:
             return await self._bot.edit_message_text('Выберите категорию',
@@ -314,6 +63,7 @@ class BotService:
     async def show_categories(self, data, message):
         kb = InlineKeyboardMarkup()
         title_text = ' | Категории:'
+
         # category = Category.objects.get(id=data)
         # category = session.query(Category).filter_by(id=data).first()
 
@@ -335,6 +85,9 @@ class BotService:
             if str(item['parent']) == str(data):
                 category.append(item)
                 is_root = True
+            if str(item['id']) == str(data):
+                if item['parent'] == 0:
+                    is_root = True
 
         buttons = []
 
@@ -348,11 +101,6 @@ class BotService:
                     InlineKeyboardButton(text=cat['name'],
                                          switch_inline_query_current_chat='category_' + str(cat['name'])))
 
-        if not is_root:
-            buttons.append(InlineKeyboardButton(text='<<< Назад', callback_data=str(data)))
-        buttons.append(InlineKeyboardButton(text='^ В начало', callback_data=START_KB['categories']))
-        kb.add(*buttons)
-
         this_category = wcapi.get(f"products/categories/{data}").json()
 
         if not is_root:
@@ -361,75 +109,44 @@ class BotService:
             root_category = wcapi.get(f"products/categories/{data}").json()
 
         if not is_root:
-            title_text = ' | Товары:'
+            buttons.append(InlineKeyboardButton(text='<<< Назад', callback_data=str(root_category['id'])))
+        buttons.append(InlineKeyboardButton(text='^ В начало', callback_data=START_KB['categories']))
+        kb.add(*buttons)
 
-            products = wcapi.get("products/", params={'per_page': 10}).json()
+        title_text = ' | Товары:'
+        if not is_root:
+            products = wcapi.get(f"products?category={data}").json()[:5]
 
-            await self.show_page(message, products)
-            # await self._bot.delete_message(message.chat.id, message.message_id)
-            # await self._bot.send_message(message.chat.id, root_category['name'] + title_text, reply_markup=kb)
-            return
+            if products:
+                await self.show_page(message, products, data)
+            else:
+                msg = await self._bot.send_message(message.chat.id, 'Нет товара :(')
+                time.sleep(1.5)
+                await self._bot.delete_message(message.chat.id, message_id=msg.message_id)
+                return
 
         await self._bot.edit_message_text(root_category['name'] + title_text,
                                           message_id=message.message_id,
                                           chat_id=message.chat.id,
                                           reply_markup=kb)
 
-    @staticmethod
-    async def get_product_desc_for_message(product, inline=False):
-        return f"""
-                {'<b>TITLE</b>:' + product['name'] if not inline else ''} 
-                <b>DESC</b>: {product['description']} 
-                <b>PRICE</b>:  {product['price']}
-               
-                {"<a href='" + product['images'][0]['src'] + "'>&#8205</a>" if product['images'][0]['src'] else ''}
-                """
-
-    async def show_products(self, products, chat_id):
-        for product in products:
-            kb_pr = InlineKeyboardMarkup()
-            kb_pr.add(InlineKeyboardButton(text='В корзину', callback_data='product_' + str(product.id)))
-            await self._bot.send_message(chat_id,
-                                         await self.get_product_desc_for_message(product),
-                                         parse_mode='HTML',
-                                         # disable_web_page_preview=True,
-                                         reply_markup=kb_pr)
-
-    async def show_products_inline(self, products, query_id):
-        results = []
-        for i, product in enumerate(products):
-            kb = InlineKeyboardMarkup()
-            button = InlineKeyboardButton(text='В корзину', callback_data='product_' + str(product['id']))
-            kb.add(button)
-
-            temp_res = InlineQueryResultArticle(
-                id=i + 1,
-                title='qqq',  # product['name'],  #+ f' | {product.in_stock}',
-                description='good1',
-                # product['description'] + ' ' + product['price'], #+ ' QTY: ' + str(product.in_stock),
-                input_message_content=InputTextMessageContent(
-                    parse_mode='HTML',
-                    disable_web_page_preview=False,
-                    message_text='good'  # await self.get_product_desc_for_message(product, True)
-                ),
-                thumb_url="",  # product['images'][0]['src'] if product['images'][0]['src'] else '',
-                reply_markup=kb
-
-            )
-            results.append(temp_res)
-        if results:
-            await self._bot.answer_inline_query(query_id, results, cache_time=0)
-
     async def page_actions(self, call):
         action = call.data.split('_')[1]
         user_id = str(call.message.chat.id)
 
-        message_id = call.data.split(',')[1:]
+        message_id = call['message']['reply_markup']['inline_keyboard'][0][0]['callback_data'].split('_')[2].split(',')[1:]
+        categ_id = call['message']['reply_markup']['inline_keyboard'][0][0]['callback_data'].split('_')[3]
 
         if action == 'nothing':
             return
 
         if action == 'remove':
+            for mess in message_id:
+                try:
+                    await self._bot.delete_message(user_id, message_id=mess)
+                except:
+                    pass
+
             await self._bot.delete_message(user_id, message_id=call.message.message_id)
             return
 
@@ -445,170 +162,213 @@ class BotService:
                 return await self._bot.answer_callback_query(call.id, show_alert=True,
                                                              text=f"Первая страница")
 
-        products = wcapi.get("products", params={'page': int(rp_t)}).json()
+        if categ_id != 'None':
+            products = wcapi.get(f"products", params={'category': categ_id, 'per_page': 5, 'page': int(rp_t)}).json()
+        else:
+            products = wcapi.get("products/", params={'per_page': 5, 'page': int(rp_t)}).json()
 
         if len(products) == 0:
             return await self._bot.answer_callback_query(call.id, show_alert=True,
                                                          text=f"Последняя страница")
 
-        reply_markup['inline_keyboard'][0][1]['text'] = rp_t
-        for product, mess_id in zip(products, message_id):
-            cart_prod_text = f"""{product["name"]}' \
-                                       'Price: {product["price"]}
-                                       {"<a href='" + product['images'][0]['src'] + "'>&#8205</a>" if product['images'][0]['src'] else ''}"""
-            await self._bot.edit_message_text(text=cart_prod_text, chat_id=user_id, message_id=mess_id,
-                                              reply_markup=reply_markup)
 
-        await self._bot.edit_message_text(text="Страница:", chat_id=user_id, message_id=call.message.message_id,
-                                          reply_markup=reply_markup)
+        for msg in message_id:
+            await self._bot.delete_message(user_id, message_id=msg)
 
-    async def show_page(self, message, products):
-        user_id = str(message.chat.id)
+        await self._bot.delete_message(user_id, message_id=call.message.message_id)
+
+        if categ_id != 'None':
+            category = "_" + str(categ_id)
+        else:
+            category = "_None"
 
         message_id = []
         for product in products:
-            cart_prod_text = f"""{product["name"]}' \
-                                       'Price: {product["price"]}
-                                       {"<a href='" + product['images'][0]['src'] + "'>&#8205</a>" if product['images'][0]['src'] else ''}"""
-            message = await self._bot.send_message(user_id, cart_prod_text)
+            kb_pr = InlineKeyboardMarkup()
+            kb_pr.add(InlineKeyboardButton(text='В корзину', callback_data='product_' + str(product['id'])))
+            cart_prod_text = f'{product["name"]}\n' + \
+                             f'{"Цена: " + product["price"]} грн.\n' + \
+                             f'{"Описание: " + clean_inf(product["description"])}\n' + \
+                             f'{"Изображение: " + product["images"][0]["src"] if product["images"][0]["src"] else ""}'
+            message = await self._bot.send_message(user_id, cart_prod_text, reply_markup=kb_pr)
             message_id.append(str(message.message_id))
 
-        key =','.join(message_id)
+        key = ','.join(message_id)
 
         kb = InlineKeyboardMarkup()
         buttons = [
-            InlineKeyboardButton(text=u'\U00002796', callback_data='page_decrease_,' + str(key)),
-            InlineKeyboardButton(text=str(1), callback_data='page_nothing'),
-            InlineKeyboardButton(text=u'\U00002795', callback_data='page_increase_,' + str(key)),
-            InlineKeyboardButton(text=u'\U0000274C', callback_data='page_remove_,' + str(key))
+            InlineKeyboardButton(text=u'\U00002796', callback_data='page_decrease_,' + str(key) + category),
+            InlineKeyboardButton(text=str(rp_t), callback_data='page_nothing'),
+            InlineKeyboardButton(text=u'\U00002795', callback_data='page_increase_,' + str(key) + category),
+            InlineKeyboardButton(text=u'\U0000274C', callback_data='page_remove_,' + str(key) + category)
         ]
         kb.add(*buttons)
-        await self._bot.send_message(user_id, 'Страница:', reply_markup=kb)
+
+        await self._bot.send_message(user_id, "Выберете страницу:", reply_markup=kb)
+
+    async def show_page(self, message, products, category=None):
+        user_id = str(message.chat.id)
+
+        message_id = []
+
+        if category is not None:
+            category = "_" + str(category)
+        else:
+            category = "_None"
+
+        for product in products:
+            kb_pr = InlineKeyboardMarkup()
+            kb_pr.add(InlineKeyboardButton(text='В корзину', callback_data='product_' + str(product['id'])))
+            cart_prod_text = f'{product["name"]}\n' + \
+                             f'{"Цена: " + product["price"]} грн.\n' + \
+                             f'{"Описание: " + clean_inf(product["description"])}\n' + \
+                             f'{"Изображение: " + product["images"][0]["src"] if product["images"][0]["src"] else ""}'
+            message = await self._bot.send_message(user_id, cart_prod_text, reply_markup=kb_pr)
+            message_id.append(str(message.message_id))
+
+        key = ','.join(message_id)
+
+        kb = InlineKeyboardMarkup()
+        buttons = [
+            InlineKeyboardButton(text=u'\U00002796', callback_data='page_decrease_,' + str(key) + category),
+            InlineKeyboardButton(text=str(1), callback_data='page_nothing'),
+            InlineKeyboardButton(text=u'\U00002795', callback_data='page_increase_,' + str(key) + category),
+            InlineKeyboardButton(text=u'\U0000274C', callback_data='page_remove_,' + str(key) + category)
+        ]
+        kb.add(*buttons)
+        await self._bot.send_message(user_id, 'Выберете страницу:', reply_markup=kb)
+
+    async def show_products_inline(self, products, query_id):
+        results = []
+        for i, product in enumerate(products):
+            kb = InlineKeyboardMarkup()
+            button = InlineKeyboardButton(text='В корзину', callback_data='product_' + str(product.id))
+            kb.add(button)
+
+            temp_res = InlineQueryResultArticle(
+                id=i + 1,
+                title='title',
+                description='description',
+                input_message_content=InputTextMessageContent(
+                    parse_mode='HTML',
+                    disable_web_page_preview=False,
+                    message_text='message_text'
+                ),
+                thumb_url= '', # product.img_url if product.img_url else '',
+                reply_markup=kb
+
+            )
+            results.append(temp_res)
+        if results:
+            await self._bot.answer_inline_query(query_id, results, cache_time=0)
 
     async def cart_actions(self, call):
         action = call.data.split('_')[1]
+
+        if action == 'drop':
+            carts = session.query(WpCart).filter_by(telegram_id=call.from_user.id).all()
+            for cart in carts:
+                cart.destroy()
+            await self._bot.delete_message(call.id, message_id=call.message.message_id)
+            return await self._bot.answer_callback_query(call.id, text=f"✔ Все заказы удалены !")
+
+        product_id = str(call.data.split('_')[2])
 
         if action == 'nothing':
             return
 
         user_id = str(call.message.chat.id)
-        user = await BotService.get_user_by_telegram_id(call.from_user.id)
-        cart = self.get_cart_by_user(user)
+        cart = session.query(WpCart).filter_by(telegram_id=call.from_user.id, product_id=product_id).first()
 
-        if cart.is_archived:
+        if not cart:
             return await self._bot.answer_callback_query(call.id, show_alert=False,
-                                                         text=f"This cart is already archived")
-
-        if action == 'drop':
-            cart.remove_all_from_cart()
-            return await self._bot.answer_callback_query(call.id, text=f"✔ All products removed from cart")
-
-        product_id = str(call.data.split('_')[2])
-        # product = Product.objects(id=product_id).get()
-        product = session.query(Product).filter_by(id=product_id).first()
+                                                         text=f"Заказ закрыт!")
 
         if action == 'remove':
-            cart.remove_product_from_cart(product)
-            await self._bot.delete_message(user_id, message_id=call.message.message_id)
-            return
+            if int(cart.quantity) - 1 <= 0:
+                cart.destroy()
+                await self._bot.delete_message(user_id, message_id=call.message.message_id)
+                return
+            cart.quantity = int(cart.quantity) - 1
+            cart.save()
 
         reply_markup = call.message['reply_markup']
         rp_t = reply_markup['inline_keyboard'][0][1]['text']
 
         if action == 'increase':
-            if product.in_stock == int(rp_t):
-                return await self._bot.answer_callback_query(call.id, show_alert=True,
-                                                             text=f"MAX STOCK ITEMS REACHED for {product.title}")
-            cart.add_product_to_cart(product)
+            # if product.in_stock == int(rp_t):
+            #     return await self._bot.answer_callback_query(call.id, show_alert=True,
+            #                                                  text=f"MAX STOCK ITEMS REACHED for {product.title}")
+            cart.quantity = int(cart.quantity) + 1
+            cart.save()
             rp_t = str(int(rp_t) + 1)
 
         if action == 'decrease':
-            if cart.get_product_qty(product) == 0:
-                return
-            cart.delete_product_from_cart(product)
             rp_t = str(int(rp_t) - 1)
             if rp_t == '0':
+                cart.destroy()
                 await self._bot.delete_message(user_id, message_id=call.message.message_id)
                 return
+            cart.quantity = int(cart.quantity) - 1
+            cart.save()
+
         reply_markup['inline_keyboard'][0][1]['text'] = rp_t
-        cart_prod_text = f'{product.title}\n' \
-                         f'Price: {product.get_price_str()}\n' \
-                         f'Total: {product.get_total_str(int(rp_t))}\n'
+
+        product = wcapi.get(f"products/{product_id}").json()
+        cart_prod_text = f'{product["name"]}\n' + \
+                         f'Цена: {int(product["price"]) * int(rp_t)} грн.'
 
         await self._bot.edit_message_text(text=cart_prod_text, chat_id=user_id, message_id=call.message.message_id,
                                           reply_markup=reply_markup)
 
     async def show_cart(self, message):
         user_id = str(message.chat.id)
-        user = await BotService.get_user_by_telegram_id(message.from_user.id)
-        user_cart = self.get_cart_by_user(user)
-        if not user_cart or user_cart.get_size() == 0:
-            # if not user_cart:
-            return await self._bot.send_message(user_id, 'No articles yet in cart')
+        carts = session.query(WpCart).filter_by(telegram_id=user_id).all()
 
-        frequencies = user_cart.get_cart_products()  # .item_frequencies('product')
-        frequencies = {fre.product: fre for fre in frequencies}
-        products_dict = {cart_product.product: cart_product for cart_product in user_cart.get_cart_products()}
-        # products_dict = {print(cart_product.product) for cart_product in user_cart.get_cart_products()}
-        for key, cart_product in products_dict.items():
-            # qty = frequencies[key]
-            qty = 1  # fiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiix
-            product = session.query(Product).filter_by(id=key).first()
-            # cart_prod_text = f'{cart_product.product.title}\n' \
-            #                  f'Qty: {cart_product.product.in_stock}\n' \
-            #                  f'Price: {cart_product.product.get_price_str()}\n' \
-            #                  f'Total: {cart_product.product.get_total_str(qty)}\n'
-            cart_prod_text = f'{product.title}\n' \
-                             f'Qty: {product.in_stock}\n' \
-                             f'Price: {product.get_price_str()}\n' \
-                             f'Total: {product.get_total_str(qty)}\n'
+        if not carts:
+            return await self._bot.send_message(user_id, 'Нет товара в корзине!')
+
+        total_sum = 0
+        for cart_product in carts:
+            qty = 1
+            product = wcapi.get(f"products/{cart_product.product_id}").json()
+
+            cart_prod_text = f'{product["name"]}\n' + \
+                             f'Цена: {int(product["price"]) * int(cart_product.quantity)} грн.'
 
             kb = InlineKeyboardMarkup()
             buttons = [
-                InlineKeyboardButton(text=u'\U00002796', callback_data='cart_decrease_' + str(key)),
+                InlineKeyboardButton(text=u'\U00002796', callback_data='cart_decrease_' + str(product['id'])),
                 InlineKeyboardButton(text=str(qty), callback_data='cart_nothing'),
-                InlineKeyboardButton(text=u'\U00002795', callback_data='cart_increase_' + str(key)),
-                InlineKeyboardButton(text=u'\U0000274C', callback_data='cart_remove_' + str(key))
+                InlineKeyboardButton(text=u'\U00002795', callback_data='cart_increase_' + str(product['id'])),
+                InlineKeyboardButton(text=u'\U0000274C', callback_data='cart_remove_' + str(product['id']))
             ]
-            kb.add(*buttons)  # 2795
+
+            total_sum = total_sum + int(product['price']) * int(cart_product.quantity)
+
+            kb.add(*buttons)
             await self._bot.send_message(user_id, cart_prod_text, reply_markup=kb)
 
         kb = InlineKeyboardMarkup()
-        kb.add(InlineKeyboardButton(text=f'TOTAL: {user_cart.get_total_str()}', callback_data='total'))
+        kb.add(InlineKeyboardButton(text=f'Итог: {total_sum} грн.', callback_data='total'))
         kb.add(
-            InlineKeyboardButton(text='ORDER ' + u'\U00002714', callback_data='order'),
-            InlineKeyboardButton(text='REMOVE ALL  ' + u'\U0000274C', callback_data='cart_drop'),
+            InlineKeyboardButton(text='Сделать заказ ' + u'\U00002714', callback_data='order'),
+            InlineKeyboardButton(text='Удалить все  ' + u'\U0000274C', callback_data='cart_drop'),
         )
 
-        await self._bot.send_message(user_id, 'Order:', reply_markup=kb)
-
-    async def check_cart_limit_reached(self, user_cart, product):
-        # count = CartProduct.objects(cart=user_cart, product=str(product.id)).count()
-        count = session.query(CartProduct).filter_by(cart=user_cart.id, product=str(product.id)).count()
-        if count == product.in_stock:
-            return True
-        return False
+        await self._bot.send_message(user_id, 'Заказ:', reply_markup=kb)
 
     async def add_to_cart(self, call):
-        user_id = str(call.from_user.id)
-        # product = Product.objects.get(id=call.data.split('_')[1])
-        product = session.query(Product).filter_by(id=call.data.split('_')[1]).first()
-        # if stock = 0 we cannot add this prod to cart
-        if product.in_stock == 0:
-            return await self._bot.answer_callback_query(call.id, text=f"❌ Product is out of stock")
-        user = await BotService.get_user_by_telegram_id(call.from_user.id)
-        user_cart = self.get_cart_by_user(user)
+        is_archived = session.query(WpCart).filter_by(telegram_id=call.from_user.id,
+                                                      product_id=call.data.split('_')[1]).first()
+        if is_archived:
+            return await self._bot.answer_callback_query(call.id, show_alert=False, text=f"Товар уже в корзине!")
+        else:
+            product = wcapi.get("products/{id}".format(id=call.data.split('_')[1])).json()
+            add_to_card = WpCart(telegram_id=call.from_user.id, product_id=product['id'], quantity=1)
+            add_to_card.save()
 
-        if user_cart.is_archived:
-            return await self._bot.answer_callback_query(call.id, show_alert=False,
-                                                         text=f"This cart is already archived")
-
-        if await self.check_cart_limit_reached(user_cart, product):
-            await self._bot.answer_callback_query(call.id, show_alert=True,
-                                                  text=f"MAX STOCK ITEMS REACHED for {product.title}")
-            return
-        user_cart.add_product_to_cart(product)
-        await self._bot.answer_callback_query(call.id, text=f"✔ Added to cart: {product.title}")
+            return await self._bot.answer_callback_query(call.id, text=f"✔ Добавлен в корзину: {product['name']}")
 
     @staticmethod
     def check_user_by_telegram_id(telegram_id, username):
@@ -617,15 +377,8 @@ class BotService:
         if not telegram_id:
             return None
 
-        # user = User.objects(telegram_id=telegram_id).first()
         user = session.query(User).filter_by(telegram_id=telegram_id).first()
         if not user:
-            # user = User.objects.create(
-            #     telegram_id=telegram_id,
-            #     username=username if username else 'No user name',
-            #     total=0,
-            #     creation_date=datetime.now()
-            # )
             user = session.add(User(telegram_id=telegram_id,
                                     username=username if username else 'No user name',
                                     total=0,
@@ -640,19 +393,15 @@ class BotService:
         if not telegram_id:
             return None
 
-        # return User.objects(telegram_id=telegram_id).first()
         return session.query(User).filter_by(telegram_id=telegram_id).first()
 
     @staticmethod
     def get_cart_by_user(user, archived_id=None):
         if archived_id:
-            # query_res = Cart.objects(user=user, id=archived_id, is_archived=True)
             query_res = session.query(Cart).filter_by(user=user.telegram_id, id=archived_id, is_archived=True)
             return query_res.first() if query_res else None
 
-        # query_res = Cart.objects(user=user, is_archived=False)
         query_res = session.query(Cart).filter_by(user=user.telegram_id, is_archived=False).first()
-        # return query_res.first() if query_res else Cart.objects.create(user=user)
         if query_res:
             return query_res
         else:
@@ -660,182 +409,140 @@ class BotService:
             session.commit()
             return session.query(Cart).filter_by(user=user.telegram_id, is_archived=False).first()
 
-    async def show_total(self, call):
-        user = await BotService.get_user_by_telegram_id(call.from_user.id)
-        user_cart = self.get_cart_by_user(user)
-        if not user_cart:
-            return
-
-        reply_markup = call.message['reply_markup']
-        text = reply_markup['inline_keyboard'][0][0]['text']
-        reply_markup['inline_keyboard'][0][0]['text'] = f'TOTAL: {user_cart.get_total_str()}'
-        if text == reply_markup['inline_keyboard'][0][0]['text']:
-            return
-        await self._bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id,
-                                                  reply_markup=reply_markup)
-
     async def start(self, message):
         kb = ReplyKeyboardMarkup()
         buttons = [KeyboardButton(button_name) for button_name in START_KB.values()]
         kb.add(*buttons)
-        await self._bot.send_message(message.chat.id, 'Welcome to online store, ' + str(message.from_user.username),
+        kb.row(KeyboardButton('О нас'))
+        await self._bot.send_message(message.chat.id, 'Добро пожаловать в Parfumburo, ' + str(message.from_user.first_name),
                                      reply_markup=kb)
 
-    async def show_promo_products(self, message):
-        await self._bot.delete_message(message.chat.id, message.message_id)
-        # promo_products_query = Product.objects.filter(discount_price__exists=True)
-        promo_products_query = session.query(Product).filter(Product.discount_price.isnot(None))
-
-        if promo_products_query.count() == 0:
-            return await self._bot.send_message(message.chat.id, 'No discount products found')
-        promo_products = []
-        [promo_products.append(promo_product) for promo_product in promo_products_query]
-        await self.show_products(promo_products, message.chat.id)
-
-    async def show_articles_by_category_title(self, category_title, query_id):
-        # products = [product for product in Product.objects(category=Category.objects(title=category_title).get())]
-        # session.add(Category(title=category_title))
-        # session.commit()
-        # category = session.query(Category).filter_by(title=category_title).all()
-        # session.add(Product(category=category))
-        # session.commit()
-        # products = [product for product in session.query(Product).filter_by(category=session.query(Product).filter_by(category=category).first())]
-        category = session.query(Category).filter_by(title=category_title).first()
-        products = session.query(Product).filter_by(category=category.id).all()
-        # products = [product for product in products]
-        await self.show_products_inline(products, query_id)
-
-    async def process_inline(self, query):
-        data = query.query
-        if not data:
-            return
-
-        # query_set = Product.objects(title__contains=data)
-        data = Product.title.ilike('%' + str(data) + '%')
-        query_set = session.query(Product).filter(data)
-        if query_set.count() == 0:
-            return
-        products = [product for product in query_set]
-        await self.show_products_inline(products, query.id)
-
-    async def get_bill_text(self, products_dict, cart_total, archived_date):
-        if not products_dict:
-            return ""
-        bill = f"""
-                ORDER TIME: {archived_date.strftime(BotService.datetime_fmt)}
-                TOTAL: {cart_total}
-                ##########################"""
-        for product, count in products_dict.items():
-            product = session.query(Product).filter_by(id=product).first()
-            qty = session.query(CartProduct).filter_by(cart=products_dict[product.id].cart, product=product.id).all()
-            bill += f"""
-                TITLE: {product.title}
-                QTY: {len(qty)}
-                PRICE: {product.get_price_str()}
-                TOTAL: {product.get_total_str(len(qty))}
-                --------------------------"""
-        return bill
-
-    async def subtract_qty(self, products_dict):
-        for product, qty in products_dict.items():
-            product = session.query(Product).filter_by(id=product).first()
-            qty = len(
-                session.query(CartProduct).filter_by(cart=products_dict[product.id].cart, product=product.id).all())
-            product.in_stock -= qty
-            product.save()
+    async def show_all_products(self, message):
+        products = wcapi.get("products/", params={'per_page': 5}).json()
+        await self.show_page(message, products)
 
     async def order(self, call):
         user_id = str(call.message.chat.id)
-        user = await BotService.get_user_by_telegram_id(call.from_user.id)
-        cart = self.get_cart_by_user(user)
-        if not cart:
-            return
 
-        # GET ALL CART PRODUCTS
-        products_dict = cart.get_cart_products_freq_dict()
-        archived_date = datetime.now()
-        bill = await self.get_bill_text(products_dict, cart.get_total_str(), archived_date)
-        await self.subtract_qty(products_dict)
-        if not bill:
-            return await self._bot.answer_callback_query(call.id, show_alert=True, text=f"No products in cart")
+        # logic for orders
+        carts = session.query(WpCart).filter_by(telegram_id=user_id).all()
 
-        await self._bot.send_message(user_id, text=bill)
-        # ARCHIVE THE CART
-        cart.is_archived = True
-        cart.archive_date = archived_date
-        cart.save()
+        line_items = [{'product_id': item.product_id, 'quantity': item.quantity} for item in carts]
 
-    async def show_archive(self, message):
-        user_id = str(message.chat.id)
-        # get carts with is_archived = True
-        user = await BotService.get_user_by_telegram_id(message.from_user.id)
-        # query = Cart.objects(user=user, is_archived=True)
-        query = session.query(Cart).filter_by(user=user.telegram_id, is_archived=True)
+        data = {
+            "payment_method": "bacs",
+            "payment_method_title": "Direct Bank Transfer",
+            "set_paid": True,
+            "billing": {
+                "first_name": call['from']['first_name'],
+                "last_name": call['from']['last_name'],
+                "email": str(call['from']['username']) + '@telegram.com' if len(str(call['from']['username'])) != 0 else 'without_username' + '@telegram.com',
+                "phone": str(call['from']['id']),
+                "company": "",
+                "address_1": "",
+                "address_2": "",
+                "city": "",
+                "state": "",
+                "postcode": "",
+                "country": str(call['from']['username']),
+            },
 
-        if not query:
-            return await self._bot.send_message(user_id, "No archived carts found")
+            "status": 'pending',
+            "line_items": line_items,
 
-        carts = [cart for cart in query]
-        kb = InlineKeyboardMarkup()
+        }
+
+        new_order = wcapi.post("orders", data).json()
+
+        order = Orders(telegram_id=user_id, order_id=new_order['id'])
+        order.save()
+
         for cart in carts:
-            button_text = f'DATE: {cart.archive_date.strftime(BotService.datetime_fmt)} ' \
-                          f'TOTAL: {cart.get_total_str()}'
+            cart.destroy()
 
-            kb.add(InlineKeyboardButton(button_text, callback_data='archive_' + str(cart.id)))
-        if not kb:
-            return await self._bot.send_message(user_id, text='No archived orders yet')
-        await self._bot.send_message(user_id, text='Orders history:', reply_markup=kb)
-
-    async def show_archive_cart(self, call, archived_cart_id):
-        user = await BotService.get_user_by_telegram_id(call.from_user.id)
-        archived_cart = self.get_cart_by_user(user, archived_id=archived_cart_id)
-        bill = await self.get_bill_text(archived_cart.get_cart_products_freq_dict(),
-                                        archived_cart.get_total_str(),
-                                        archived_cart.archive_date)
-        if bill:
-            return await self._bot.send_message(call.message.chat.id, bill)
-        await self._bot.send_message(call.message.chat.id, 'No archived cart found')
+        await self._bot.send_message(user_id, text="Спасибо за заказ! Наш менеджер свяжется с вами для уточнения деталей оплаты и доставки.")
 
     async def personal(self, message):
         kb = InlineKeyboardMarkup()
         buttons = [InlineKeyboardButton(text="Информация", callback_data='personal_info'),
                    InlineKeyboardButton(text="Архив заказов(inline)", switch_inline_query_current_chat='order_history')]
         kb.add(*buttons)
-        await self._bot.send_message(message.chat.id, text=f"Welcome to personal cabinet, {message.from_user.username}",
+        await self._bot.send_message(message.chat.id,
+                                     'Добро пожаловать в личный кабинет, ' + str(message.from_user.first_name),
                                      reply_markup=kb)
 
     async def personal_info(self, call):
         user = await self.get_user_by_telegram_id(call.from_user.id)
-        message_text = f'Username={user.username}' \
-                       f'\nCreation_date={user.creation_date.strftime(self.datetime_fmt)}' \
-                       f'\nTotal={user.get_total_str()}' \
-                       f'\nTelegram_id={user.telegram_id}'
+
+        orders = session.query(Orders).filter_by(telegram_id=user.telegram_id).all()
+        total_sum = 0
+        for item in orders:
+            order = wcapi.get(f"orders/{item.order_id}").json()
+            total_sum = total_sum + float(order['total'])
+
+        message_text = f'Дата регистрации: {user.creation_date.strftime(self.datetime_fmt)}' \
+                       f'\nОбщая стоимость заказов: {total_sum}' \
+                       f'\nTelegram id: {user.telegram_id}'
 
         return await self._bot.answer_callback_query(call.id, show_alert=True, text=message_text)
 
     async def order_history_inline(self, query):
         user_id = str(query.from_user.id)
-        # get carts with is_archived = True
-        user = await BotService.get_user_by_telegram_id(query.from_user.id)
-        # cart_query = Cart.objects(user=user, is_archived=True)
-        cart_query = session.query(Cart).filter_by(user=user.telegram_id, is_archived=True)
-        if not cart_query:
-            return await self._bot.send_message(user_id, "No archived carts found")
 
-        carts = [cart for cart in cart_query]
+        orders = session.query(Orders).filter_by(telegram_id=user_id).all()
+
         results = []
-        for i, cart in enumerate(carts):
+        for i, item in enumerate(orders):
+            order = wcapi.get(f"orders/{item.order_id}").json()
+
+            msg = ''
+            for item in order['line_items']:
+                msg = msg + item['name'] + '\n'
+                msg = msg + 'Количество: ' + item['name'] + '\n'
+                msg = msg + 'Цена: ' + str(item['price']) + '\n'
+                msg = msg + '\n'
+
             temp_res = InlineQueryResultArticle(
                 id=i + 1,
-                title=f'DATE: {cart.archive_date.strftime(self.datetime_fmt)}',
-                description=f'TOTAL: {cart.get_total_str()}',
+                title=f'Дата: {order["date_created"]}',
+                description=f'Стоимость: {order["total"]}',
                 input_message_content=InputTextMessageContent(
                     disable_web_page_preview=False,
-                    message_text=await self.get_bill_text(cart.get_cart_products_freq_dict(),
-                                                          cart.get_total_str(),
-                                                          cart.archive_date)
+                    message_text=msg
                 ),
             )
             results.append(temp_res)
         if results:
             await self._bot.answer_inline_query(query.id, results, cache_time=0)
+
+    async def show_news(self, message):
+        await self._bot.send_message(message.chat.id, 'Новостей пока нет!')
+
+    async def about(self, message):
+        text = \
+        """
+        О нас
+        
+        Мы объединяем создателей концептуальных парфюмерных брендов.
+        
+        Высокая парфюмерия
+        
+        За каждым ароматом стоит уникальная история, фактура, передающая тонкую натуру парфюмера.
+
+        КОНЦЕПЦИЯ
+        МНОГОГРАННОСТЬ
+        ЭКСКЛЮЗИВНОСТЬ
+
+        Parfum Buro — это симбиоз арта и парфюмерии, проект, цель которого — развитие и объединение культуры hauteparfumerie среди украинской аудитории.
+        
+        Это интерактивная платформа, объединяющая профессионалов рынка нишевой парфюмерии, представителей трендовых профильных масс-медиа и просто любителей редких эксклюзивных ароматов. 
+
+        Наша тонко и старательно подобранная коллекция позволит парфюмерным гурманам найти свое особое уникальное звучание.
+        
+        http://www.parfumburo.ua/
+        
+        ул. Кожемяцкая, 18
+        Киев, Украина
+        """
+
+        await self._bot.send_message(message.chat.id,  text)

@@ -24,8 +24,22 @@ class CRUD():
         session.delete(self)
         return session.commit()
 
+class WpCart(Base,CRUD):
+    __tablename__ = 'WpCart'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    telegram_id = Column(String(32), nullable=False)
+    product_id = Column(String(32), nullable=False)
+    quantity = Column(String(32))
 
-class Attributes(Base):
+
+class Orders(Base, CRUD):
+    __tablename__ = 'Orders'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    telegram_id = Column(String(32), nullable=False)
+    order_id = Column(String(32), nullable=False)
+
+
+class Attributes(Base, CRUD):
     __tablename__ = 'Attributes'
     id = Column(Integer, primary_key=True, autoincrement=True)
     height = Column(String(32))

@@ -47,20 +47,9 @@ def check_user(func):
     return wrapper
 
 
-@dp.inline_handler(lambda query: query.query.split('_')[0] == 'category')
-async def inline_show_articles(query: types.InlineQuery):
-    categoty_title = query.query.split('_')[1]
-    await bs.show_articles_by_category_title(categoty_title, query.id)
-
-
 @dp.inline_handler(lambda query: query.query == 'order_history')
 async def order_history_inline(query):
     await bs.order_history_inline(query)
-
-
-@dp.inline_handler(lambda query: True)
-async def inline(query):
-    await bs.process_inline(query)
 
 
 @dp.message_handler(commands=['start'])
@@ -72,11 +61,6 @@ async def start(message: types.Message):
 @dp.message_handler(lambda message: message.text == START_KB['categories'])
 async def categories(message):
     await bs.view_root_categories(message)
-
-
-@dp.callback_query_handler(lambda call: call.data == 'total')
-async def show_total(call):
-    await bs.show_total(call)
 
 
 @dp.callback_query_handler(lambda call: call.data.split('_')[0] == 'product')
@@ -93,24 +77,15 @@ async def show_cart(message):
 async def cart_actions(call):
     await bs.cart_actions(call)
 
+
 @dp.callback_query_handler(lambda call: call.data.split('_')[0] == 'page')
 async def cart_actions(call):
-    await bs.page_actions(call)
+    await bs\
+        .page_actions(call)
 
 @dp.callback_query_handler(lambda call: call.data == 'order')
 async def order(call):
     await bs.order(call)
-
-
-@dp.message_handler(lambda message: message.text == START_KB['archive'])
-async def categories(message):
-    await bs.show_archive(message)
-
-
-@dp.callback_query_handler(lambda call: call.data.split('_')[0] == 'archive')
-async def show_archive_cart(call):
-    archived_cart_id = call.data.split('_')[1]
-    await bs.show_archive_cart(call, archived_cart_id)
 
 
 @dp.callback_query_handler(lambda call: call.data == 'personal_info')
@@ -118,22 +93,31 @@ async def personal_info(call):
     await bs.personal_info(call)
 
 
-@dp.callback_query_handler(lambda call: True)
-async def get_cat_or_products(call):
-    if call.data == START_KB['categories']:
-        return await bs.view_root_categories(call.message)
-    await bs.show_categories(call.data, message=call.message)
+@dp.message_handler(lambda message: message.text == START_KB['all'])
+async def show_all_products(message):
+    await bs.show_all_products(message)
 
 
-@dp.message_handler(lambda message: message.text == START_KB['promo'])
-async def show_promo_products(message):
-    await bs.show_promo_products(message)
+@dp.message_handler(lambda message: message.text == START_KB['news'])
+async def show_news(message):
+    await bs.show_news(message)
 
 
 @dp.message_handler(lambda message: message.text == START_KB['personal'])
 async def personal(message):
     await bs.personal(message)
 
+
+@dp.message_handler(lambda message: message.text == 'О нас')
+async def about(message):
+    await bs.about(message)
+
+
+@dp.callback_query_handler(lambda call: True)
+async def get_cat_or_products(call):
+    if call.data == START_KB['categories']:
+        return await bs.view_root_categories(call.message)
+    await bs.show_categories(call.data, message=call.message)
 
 if __name__ == '__main__':
     os.makedirs('logs', exist_ok=True)
