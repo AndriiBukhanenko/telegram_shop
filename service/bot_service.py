@@ -595,7 +595,16 @@ class BotService:
 
     async def show_news(self, message):
         try:
-            await self._bot.send_message(message.chat.id, 'Новостей пока нет!')
+            news = session.query(News).all()[:10]
+            if len(news) == 0:
+                await self._bot.send_message(message.chat.id, 'Новостей пока нет!')
+            else:
+                for new in news:
+                    if new.photo == '':
+                        await self._bot.send_message(message.chat.id, new.text)
+                    else:
+                        await self._bot.send_photo(message.chat.id, new.photo,
+                                                caption=new.text)
         except Exception as ex:
             print('ERROR: ' + str(ex))
 

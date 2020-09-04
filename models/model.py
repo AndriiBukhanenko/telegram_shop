@@ -39,6 +39,14 @@ class Orders(Base, CRUD):
     order_id = Column(String(32), nullable=False)
 
 
+class News(Base, CRUD):
+    __tablename__ = 'News'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    text = Column(String(1024), nullable=False)
+    status = Column(String(2), nullable=False)
+    photo = Column(String(1024), nullable=False)
+
+
 class Attributes(Base, CRUD):
     __tablename__ = 'Attributes'
     id = Column(Integer, primary_key=True, autoincrement=True)

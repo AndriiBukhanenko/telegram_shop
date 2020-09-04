@@ -1,3 +1,11 @@
+from aiogram.dispatcher.filters.state import State, StatesGroup
+
+
+class Form(StatesGroup):
+    news_text = State()
+    photo = State()
+    get_photo = State()
+    agree = State()
 
 
 def clean_inf(descriprion):
